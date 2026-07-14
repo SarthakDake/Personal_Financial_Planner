@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { formatINR, formatPct } from '@/lib/utils'
 import { BookOpen, Plus, RefreshCw, Sparkles } from 'lucide-react'
 
-const COLORS = ['#0B3D5C', '#1F6F8B', '#99C24D', '#F18F01', '#C73E1D']
+const COLORS = ['#1c1917', '#57534e', '#a89078', '#78716c', '#926f4c']
 
 export default function Dashboard() {
   const [clients, setClients] = useState<Client[]>([])
@@ -110,7 +110,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {msg && <p className="text-sm text-teal animate-fade-in">{msg}</p>}
+      {msg && <p className="text-sm text-stone-600 dark:text-stone-300 animate-fade-in">{msg}</p>}
 
       {!clients.length && (
         <Card className="animate-fade-up">
@@ -199,7 +199,7 @@ export default function Dashboard() {
                     <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
                     <YAxis type="category" dataKey="name" width={70} tick={{ fontSize: 10 }} />
                     <Tooltip />
-                    <Bar dataKey="progress" fill="#1F6F8B" radius={[0, 6, 6, 0]} />
+                    <Bar dataKey="progress" fill="#57534e" radius={[0, 6, 6, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

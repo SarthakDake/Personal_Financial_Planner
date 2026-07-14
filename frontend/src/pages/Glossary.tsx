@@ -254,7 +254,7 @@ export default function Glossary() {
                   <div className="font-semibold text-navy dark:text-white text-sm">{item.term}</div>
                   <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{item.meaning}</p>
                   {item.tip && (
-                    <p className="mt-1 text-xs text-teal">Tip: {item.tip}</p>
+                    <p className="mt-1 text-xs text-stone-600 dark:text-stone-400">Tip: {item.tip}</p>
                   )}
                 </div>
               ))}

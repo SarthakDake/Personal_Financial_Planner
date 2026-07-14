@@ -43,6 +43,20 @@ def test_health(client: TestClient):
     assert res.json()["status"] == "ok"
 
 
+def test_client_create_rejects_missing_mandatory_fields(client: TestClient, auth_headers):
+    """Backend validation: name, income, and living expenses are required."""
+    bad = {
+        "profile": {
+            "personal": {"full_name": "", "age": 30, "retirement_age": 60},
+            "income": {"salary_monthly": 0},
+            "expenses": {"monthly_living": 0},
+            "risk_profile": "moderate",
+        }
+    }
+    res = client.post("/api/v1/clients", headers=auth_headers, json=bad)
+    assert res.status_code == 422
+
+
 def test_demo_profile_uses_percentages(client: TestClient, auth_headers):
     res = client.get("/api/v1/planning/demo-profile", headers=auth_headers)
     assert res.status_code == 200

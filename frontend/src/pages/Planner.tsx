@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatINR } from '@/lib/utils'
+import { validateProfileForSave, validateStep } from '@/lib/validation'
 import { Download, Play, Plus, Sparkles, Trash2 } from 'lucide-react'
 
 const STEPS = [
@@ -36,8 +37,22 @@ const STEPS = [
 
 function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-teal/30 bg-teal/5 px-3 py-2 text-xs text-slate-600 dark:text-slate-300 mb-4">
+    <div className="rounded-xl border border-border bg-stone-100/80 dark:bg-stone-900/50 px-3 py-2 text-xs text-stone-600 dark:text-stone-300 mb-4">
       {children}
+    </div>
+  )
+}
+
+function ErrorBox({ errors }: { errors: string[] }) {
+  if (!errors.length) return null
+  return (
+    <div className="rounded-xl border border-danger/30 bg-red-50 dark:bg-red-950/30 px-3 py-2 text-xs text-danger space-y-1">
+      <p className="font-semibold">Please fix the following:</p>
+      <ul className="list-disc pl-4 space-y-0.5">
+        {errors.map((e) => (
+          <li key={e}>{e}</li>
+        ))}
+      </ul>
     </div>
   )
 }
@@ -104,6 +119,7 @@ export default function Planner() {
   } | null>(null)
   const [riskResult, setRiskResult] = useState<Record<string, unknown> | null>(null)
   const [message, setMessage] = useState('')
+  const [errors, setErrors] = useState<string[]>([])
 
   useEffect(() => {
     getRiskQuestionnaire().then(setQuestionnaire).catch(() => undefined)
@@ -144,9 +160,27 @@ export default function Planner() {
     }
   }
 
+  function runStepValidation(targetStep = step): boolean {
+    const result = validateStep(targetStep, profile)
+    if (!result.ok) {
+      setErrors(result.errors)
+      setMessage('')
+      return false
+    }
+    setErrors([])
+    return true
+  }
+
   async function saveClient() {
+    const result = validateProfileForSave(profile)
+    if (!result.ok) {
+      setErrors(result.errors)
+      setMessage('')
+      return null
+    }
     setSaving(true)
     setMessage('')
+    setErrors([])
     try {
       if (clientId) {
         await updateClient(clientId, profile)
@@ -166,7 +200,13 @@ export default function Planner() {
   }
 
   async function runPreview() {
+    const result = validateProfileForSave(profile)
+    if (!result.ok) {
+      setErrors(result.errors)
+      return
+    }
     setGenerating(true)
+    setErrors([])
     try {
       const plan = await previewPlan(profile)
       setPreview(plan as unknown as Record<string, unknown>)
@@ -179,11 +219,19 @@ export default function Planner() {
   }
 
   async function runGenerate() {
+    const result = validateProfileForSave(profile)
+    if (!result.ok) {
+      setErrors(result.errors)
+      setMessage('')
+      return
+    }
     setGenerating(true)
     setMessage('')
+    setErrors([])
     try {
       const id = (await saveClient()) || clientId || undefined
-      const result = await generatePlan({
+      if (!id && !profile.personal.full_name) return
+      const gen = await generatePlan({
         client_id: id || undefined,
         profile: id ? undefined : profile,
         generate_excel: true,
@@ -191,8 +239,8 @@ export default function Planner() {
         generate_charts: true,
         save: Boolean(id),
       })
-      setPreview(result.plan as unknown as Record<string, unknown>)
-      setReportMeta({ client_id: result.client_id || id || undefined })
+      setPreview(gen.plan as unknown as Record<string, unknown>)
+      setReportMeta({ client_id: gen.client_id || id || undefined })
       setMessage('Full plan generated — dashboard, Excel, PDF, and charts ready.')
     } catch (e: unknown) {
       setMessage(String((e as { response?: { data?: { detail?: string } } })?.response?.data?.detail || e))
@@ -956,7 +1004,8 @@ export default function Planner() {
                   {generating ? 'Generating…' : 'Generate Full Plan'}
                 </Button>
               </div>
-              {message && <p className="text-sm text-teal">{message}</p>}
+              <ErrorBox errors={errors} />
+              {message && <p className="text-sm text-stone-600 dark:text-stone-300">{message}</p>}
               {preview && (
                 <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
                   {[
@@ -991,13 +1040,27 @@ export default function Planner() {
             </div>
           )}
 
-          {message && step !== 11 && <p className="text-sm text-teal">{message}</p>}
+          <ErrorBox errors={errors} />
+          {message && step !== 11 && <p className="text-sm text-stone-600 dark:text-stone-300">{message}</p>}
 
           <div className="flex justify-between pt-4 border-t border-border/50 gap-2">
-            <Button variant="outline" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+            <Button
+              variant="outline"
+              disabled={step === 0}
+              onClick={() => {
+                setErrors([])
+                setStep((s) => s - 1)
+              }}
+            >
               Back
             </Button>
-            <Button disabled={step === STEPS.length - 1} onClick={() => setStep((s) => s + 1)}>
+            <Button
+              disabled={step === STEPS.length - 1}
+              onClick={() => {
+                if (!runStepValidation(step)) return
+                setStep((s) => s + 1)
+              }}
+            >
               Next
             </Button>
           </div>

@@ -76,7 +76,7 @@ export default function WhatIf() {
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-teal"
+        className="w-full accent-stone-600"
       />
     </div>
   )

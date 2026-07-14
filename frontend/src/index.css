@@ -2,23 +2,27 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  Elegant silent palette — charcoal ink, soft stone, muted bronze.
+  Avoids loud teal/lime and generic purple/cream AI themes.
+*/
 @theme {
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Instrument Serif", Georgia, serif;
 
-  --color-navy: #0b3d5c;
-  --color-navy-deep: #072a40;
-  --color-teal: #1f6f8b;
-  --color-accent: #99c24d;
-  --color-warm: #f18f01;
-  --color-danger: #c73e1d;
-  --color-surface: #f4f7fa;
-  --color-surface-dark: #0c1821;
+  --color-navy: #1c1917;
+  --color-navy-deep: #0c0a09;
+  --color-teal: #57534e;
+  --color-accent: #a89078;
+  --color-warm: #926f4c;
+  --color-danger: #9f4a4a;
+  --color-surface: #f5f5f4;
+  --color-surface-dark: #0c0a09;
   --color-card: #ffffff;
-  --color-card-dark: #122535;
-  --color-muted: #64748b;
-  --color-border: #d8e2ea;
-  --color-border-dark: #1e3a4c;
+  --color-card-dark: #1c1917;
+  --color-muted: #78716c;
+  --color-border: #e7e5e4;
+  --color-border-dark: #292524;
 }
 
 * {
@@ -35,14 +39,14 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   background: var(--color-surface);
-  color: #0f172a;
+  color: #1c1917;
   -webkit-font-smoothing: antialiased;
 }
 
 .dark body,
 .dark {
   background: var(--color-surface-dark);
-  color: #e2e8f0;
+  color: #e7e5e4;
 }
 
 .font-display {
@@ -50,17 +54,18 @@ body {
 }
 
 .bg-mesh {
+  background-color: var(--color-surface);
   background-image:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(31, 111, 139, 0.18), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(153, 194, 77, 0.14), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(11, 61, 92, 0.10), transparent 55%);
+    radial-gradient(ellipse 90% 55% at 0% 0%, rgba(168, 144, 120, 0.10), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(28, 25, 23, 0.05), transparent 50%),
+    linear-gradient(180deg, #fafaf9 0%, #f5f5f4 45%, #f0efed 100%);
 }
 
 .dark .bg-mesh {
+  background-color: var(--color-surface-dark);
   background-image:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(31, 111, 139, 0.28), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(153, 194, 77, 0.12), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(7, 42, 64, 0.6), transparent 55%);
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(168, 144, 120, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(41, 37, 36, 0.8), transparent 55%);
 }
 
 @keyframes fade-up {

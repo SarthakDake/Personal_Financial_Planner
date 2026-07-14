@@ -6,8 +6,8 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-mesh relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-teal/10 blur-3xl animate-fade-in" />
-        <div className="absolute -left-16 bottom-0 h-[22rem] w-[22rem] rounded-full bg-accent/10 blur-3xl animate-fade-in delay-2" />
+        <div className="absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-stone-400/10 blur-3xl animate-fade-in" />
+        <div className="absolute -left-16 bottom-0 h-[22rem] w-[22rem] rounded-full bg-accent/15 blur-3xl animate-fade-in delay-2" />
       </div>
 
       <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-6">

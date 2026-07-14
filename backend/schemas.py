@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
@@ -12,7 +12,7 @@ from pydantic import BaseModel, EmailStr, Field
 class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
-    full_name: str = ""
+    full_name: str = Field(default="", min_length=0, max_length=255)
 
 
 class UserOut(BaseModel):
@@ -38,9 +38,9 @@ class LoginRequest(BaseModel):
 # ── Client profile (fully configurable) ───────────────────────────────────────
 
 class PersonalDetailsSchema(BaseModel):
-    full_name: str = ""
-    age: int = Field(default=30, ge=18, le=100)
-    retirement_age: int = Field(default=60, ge=30, le=80)
+    full_name: str = Field(..., min_length=2, max_length=255, description="Mandatory client name")
+    age: int = Field(..., ge=18, le=100)
+    retirement_age: int = Field(..., ge=30, le=80)
     life_expectancy: int = Field(default=85, ge=60, le=110)
     marital_status: str = "single"
     dependents: int = Field(default=0, ge=0)
@@ -51,40 +51,78 @@ class PersonalDetailsSchema(BaseModel):
     pan: str = ""
     residential_status: str = "resident"
 
+    @field_validator("full_name")
+    @classmethod
+    def name_not_blank(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) < 2:
+            raise ValueError("Full name is required (min 2 characters)")
+        return v
+
+    @model_validator(mode="after")
+    def ages_consistent(self) -> PersonalDetailsSchema:
+        if self.retirement_age <= self.age:
+            raise ValueError("retirement_age must be greater than age")
+        if self.life_expectancy <= self.retirement_age:
+            raise ValueError("life_expectancy must be greater than retirement_age")
+        return self
+
 
 class IncomeSchema(BaseModel):
-    salary_monthly: float = 0
-    bonus_annual: float = 0
-    business_income_annual: float = 0
-    rental_income_monthly: float = 0
-    other_income_annual: float = 0
-    employer_epf_contribution_monthly: float = 0
-    employee_epf_contribution_monthly: float = 0
+    salary_monthly: float = Field(0, ge=0)
+    bonus_annual: float = Field(0, ge=0)
+    business_income_annual: float = Field(0, ge=0)
+    rental_income_monthly: float = Field(0, ge=0)
+    other_income_annual: float = Field(0, ge=0)
+    employer_epf_contribution_monthly: float = Field(0, ge=0)
+    employee_epf_contribution_monthly: float = Field(0, ge=0)
+
+    @model_validator(mode="after")
+    def require_some_income(self) -> IncomeSchema:
+        monthly = (
+            self.salary_monthly
+            + self.bonus_annual / 12
+            + self.business_income_annual / 12
+            + self.rental_income_monthly
+            + self.other_income_annual / 12
+        )
+        if monthly <= 0:
+            raise ValueError("At least one income source must be greater than zero")
+        return self
 
 
 class ExpensesSchema(BaseModel):
-    monthly_living: float = 0
-    travel_monthly: float = 0
-    medical_monthly: float = 0
-    education_monthly: float = 0
-    insurance_premium_monthly: float = 0
-    entertainment_monthly: float = 0
-    miscellaneous_monthly: float = 0
-    rent_monthly: float = 0
+    monthly_living: float = Field(..., ge=0, description="Mandatory monthly living expenses")
+    travel_monthly: float = Field(0, ge=0)
+    medical_monthly: float = Field(0, ge=0)
+    education_monthly: float = Field(0, ge=0)
+    insurance_premium_monthly: float = Field(0, ge=0)
+    entertainment_monthly: float = Field(0, ge=0)
+    miscellaneous_monthly: float = Field(0, ge=0)
+    rent_monthly: float = Field(0, ge=0)
+
+    @field_validator("monthly_living")
+    @classmethod
+    def living_required(cls, v: float) -> float:
+        if v <= 0:
+            raise ValueError("Monthly living expenses are required and must be > 0")
+        return v
 
 
 class LoanSchema(BaseModel):
-    name: str
+    name: str = Field(..., min_length=1)
     loan_type: str = "other"
-    principal_outstanding: float
+    principal_outstanding: float = Field(..., gt=0)
     interest_rate_annual: float = Field(
         ...,
+        gt=0,
+        le=100,
         description="Annual interest rate as a percentage, e.g. 8.5 for 8.5% (not 0.085)",
     )
-    emi: float = Field(0, description="Monthly EMI amount in INR")
-    tenure_months_remaining: int
-    original_principal: float = 0
-    prepayment_amount: float = 0
+    emi: float = Field(..., gt=0, description="Monthly EMI amount in INR")
+    tenure_months_remaining: int = Field(..., gt=0)
+    original_principal: float = Field(0, ge=0)
+    prepayment_amount: float = Field(0, ge=0)
     start_date: Optional[str] = None
 
 
@@ -177,16 +215,16 @@ class AssumptionsSchema(BaseModel):
 
 
 class ClientProfileSchema(BaseModel):
-    personal: PersonalDetailsSchema = Field(default_factory=PersonalDetailsSchema)
-    income: IncomeSchema = Field(default_factory=IncomeSchema)
-    expenses: ExpensesSchema = Field(default_factory=ExpensesSchema)
+    personal: PersonalDetailsSchema
+    income: IncomeSchema
+    expenses: ExpensesSchema
     loans: list[LoanSchema] = Field(default_factory=list)
     assets: AssetsSchema = Field(default_factory=AssetsSchema)
     insurance: InsuranceSchema = Field(default_factory=InsuranceSchema)
     investments: list[InvestmentSchema] = Field(default_factory=list)
     goals: list[GoalSchema] = Field(default_factory=list)
     tax: TaxSchema = Field(default_factory=TaxSchema)
-    risk_profile: str = "moderate"
+    risk_profile: str = Field(default="moderate", pattern="^(conservative|moderate|aggressive)$")
     risk_answers: dict[str, str] = Field(default_factory=dict)
     assumptions: AssumptionsSchema = Field(default_factory=AssumptionsSchema)
 

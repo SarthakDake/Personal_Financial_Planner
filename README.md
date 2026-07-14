@@ -106,7 +106,13 @@ Or click **Load Demo Family** in the Dashboard / Clients UI after login.
 
 - Money fields are labeled **(Monthly ₹)** or **(Annual ₹)** — or lump-sum balances/covers.
 - All rates use **whole percentages**: enter `8.5` for 8.5%, never `0.085`.
+- Mandatory fields are validated step-by-step (name, ages, income, living expenses, risk, and any added loans/investments/goals).
 - Terminology guide: in-app **Glossary** page (`/glossary`).
+
+### Data persistence & security
+
+Client data is saved to **`data/financial_planner.db`** (SQLite). Stopping the app does **not** delete it.  
+Details: [`docs/DATA_STORAGE.md`](docs/DATA_STORAGE.md).
 
 ### Tests
 

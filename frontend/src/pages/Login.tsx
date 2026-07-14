@@ -88,14 +88,14 @@ export default function Login() {
               {mode === 'login' ? (
                 <>
                   New advisor?{' '}
-                  <button className="text-teal underline" onClick={() => setMode('register')}>
+                  <button className="text-stone-700 dark:text-stone-300 underline" onClick={() => setMode('register')}>
                     Create account
                   </button>
                 </>
               ) : (
                 <>
                   Already registered?{' '}
-                  <button className="text-teal underline" onClick={() => setMode('login')}>
+                  <button className="text-stone-700 dark:text-stone-300 underline" onClick={() => setMode('login')}>
                     Sign in
                   </button>
                 </>
@@ -105,7 +105,7 @@ export default function Login() {
               Demo: advisor@wealthcraft.example / Advisor@123
             </p>
             <p className="mt-2 text-center text-xs">
-              <Link to="/" className="text-teal">
+              <Link to="/" className="text-stone-700 dark:text-stone-300 underline">
                 Back
               </Link>
             </p>
