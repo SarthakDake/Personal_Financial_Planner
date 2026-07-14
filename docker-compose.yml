@@ -9,7 +9,7 @@ services:
       APP_ENV: production
       DEBUG: "false"
       SECRET_KEY: ${SECRET_KEY:-change-me-in-production-use-long-random-string}
-      DATABASE_URL: postgresql+psycopg2://fp_user:fp_password@db:5432/financial_planner
+      DATABASE_URL: postgresql+psycopg://fp_user:fp_password@db:5432/financial_planner
       CORS_ORIGINS: http://localhost:80,http://localhost:5173,http://localhost
       CONFIG_DIR: /app/config
       REPORTS_DIR: /app/output/reports

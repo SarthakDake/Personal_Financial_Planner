@@ -48,21 +48,41 @@ deploy/             Nginx config for Docker
 
 ### Prerequisites
 
-- Python 3.12+
+- **Python 3.11 or 3.12** (recommended — avoid 3.14 for now; several scientific packages may lack wheels)
 - Node.js 20+
 - npm
 
 ### Backend
 
 ```bash
+# Prefer Python 3.12 if multiple versions are installed:
+#   python3.12 -m venv .venv
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
 cp .env.example .env
 
 export PYTHONPATH=.
 uvicorn backend.main:app --reload --port 8000
 ```
+
+Local development uses **SQLite** — no PostgreSQL install required.
+
+PostgreSQL (optional / production):
+
+```bash
+pip install -r requirements-postgres.txt
+# DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/financial_planner
+```
+
+#### Install troubleshooting
+
+| Error | Fix |
+|-------|-----|
+| `pg_config executable not found` / `psycopg2-binary` build fails | You don’t need it for local SQLite. Pull latest `requirements.txt` (Postgres is optional) or use Python 3.12. |
+| `uvicorn: command not found` | Install failed earlier — recreate the venv, then `pip install -r requirements.txt` and ensure the venv is activated. |
+| Packages fail on Python 3.14 | Create the venv with 3.12: `python3.12 -m venv .venv` |
 
 API docs: http://localhost:8000/docs  
 Health: http://localhost:8000/health
