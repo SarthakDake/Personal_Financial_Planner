@@ -14,16 +14,24 @@ export interface PersonalDetails {
 }
 
 export interface Income {
+  /** INR per month */
   salary_monthly: number
+  /** INR per year */
   bonus_annual: number
+  /** INR per year */
   business_income_annual: number
+  /** INR per month */
   rental_income_monthly: number
+  /** INR per year */
   other_income_annual: number
+  /** INR per month */
   employer_epf_contribution_monthly: number
+  /** INR per month */
   employee_epf_contribution_monthly: number
 }
 
 export interface Expenses {
+  /** All expense fields are INR per month */
   monthly_living: number
   travel_monthly: number
   medical_monthly: number
@@ -37,15 +45,20 @@ export interface Expenses {
 export interface Loan {
   name: string
   loan_type: string
+  /** Outstanding principal in INR */
   principal_outstanding: number
+  /** Annual interest rate as percentage, e.g. 8.5 for 8.5% */
   interest_rate_annual: number
+  /** Monthly EMI in INR */
   emi: number
   tenure_months_remaining: number
   original_principal: number
+  /** One-time prepayment amount in INR */
   prepayment_amount: number
 }
 
 export interface Assets {
+  /** All asset fields are current balances in INR */
   savings: number
   fd: number
   ppf: number
@@ -64,20 +77,27 @@ export interface Assets {
 
 export interface Insurance {
   health_cover: number
+  /** INR per year */
   health_premium_annual: number
   life_cover: number
+  /** INR per year */
   life_premium_annual: number
   accident_cover: number
+  /** INR per year */
   accident_premium_annual: number
   critical_illness_cover: number
+  /** INR per year */
   critical_illness_premium_annual: number
 }
 
 export interface Investment {
   name: string
   category: string
+  /** Current corpus / lumpsum in INR */
   amount: number
+  /** Monthly SIP in INR */
   monthly_sip: number
+  /** Expected annual return as percentage, e.g. 12 for 12% */
   expected_return: number
   is_lumpsum: boolean
 }
@@ -85,15 +105,22 @@ export interface Investment {
 export interface Goal {
   name: string
   goal_type: string
+  /** Today's cost in INR */
   current_cost: number
+  /** Years from now (<100), age, or calendar year */
   target_year: number
   priority: string
   already_saved: number
+  /** Optional inflation override as %, e.g. 8 */
+  inflation_rate?: number | null
+  /** Optional expected return as %, e.g. 12 */
+  expected_return?: number | null
   notes: string
 }
 
 export interface TaxInputs {
   regime_preference: string
+  /** All tax INR fields below are annual */
   hra_received_annual: number
   rent_paid_annual: number
   section_80c_investments: number
@@ -109,6 +136,7 @@ export interface TaxInputs {
 }
 
 export interface Assumptions {
+  /** All rates as percentages, e.g. 6 for 6%. Null/0 = system default */
   general_inflation?: number | null
   healthcare_inflation?: number | null
   education_inflation?: number | null

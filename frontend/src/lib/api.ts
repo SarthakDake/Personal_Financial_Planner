@@ -96,6 +96,16 @@ export async function scoreRisk(answers: Record<string, string>) {
   return data
 }
 
+export async function getDemoProfile(): Promise<ClientProfile> {
+  const { data } = await api.get('/planning/demo-profile')
+  return data
+}
+
+export async function seedDemoClient(): Promise<{ id: string; full_name: string; action: string }> {
+  const { data } = await api.post('/planning/seed-demo-client')
+  return data
+}
+
 export function logout() {
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')

@@ -1,156 +1,230 @@
 {
   "personal": {
-    "full_name": "Aarav Sharma",
-    "age": 35,
-    "retirement_age": 60,
-    "life_expectancy": 85,
+    "full_name": "Priya & Rohan Mehta",
+    "age": 38,
+    "retirement_age": 58,
+    "life_expectancy": 88,
     "marital_status": "married",
-    "dependents": 2,
-    "children": 1,
+    "dependents": 3,
+    "children": 2,
     "city_type": "metro",
-    "email": "aarav.sharma@example.com",
-    "phone": "+91-98765-43210",
-    "pan": "ABCDE1234F",
+    "email": "priya.rohan.mehta@example.com",
+    "phone": "+91-98100-11223",
+    "pan": "AABPM1234K",
     "residential_status": "resident"
   },
   "income": {
-    "salary_monthly": 250000,
-    "bonus_annual": 500000,
-    "business_income_annual": 0,
-    "rental_income_monthly": 25000,
-    "other_income_annual": 50000,
+    "salary_monthly": 320000,
+    "bonus_annual": 800000,
+    "business_income_annual": 180000,
+    "rental_income_monthly": 45000,
+    "other_income_annual": 60000,
     "employer_epf_contribution_monthly": 1800,
     "employee_epf_contribution_monthly": 1800
   },
   "expenses": {
-    "monthly_living": 80000,
-    "travel_monthly": 10000,
-    "medical_monthly": 5000,
-    "education_monthly": 15000,
-    "insurance_premium_monthly": 8000,
-    "entertainment_monthly": 8000,
-    "miscellaneous_monthly": 10000,
+    "monthly_living": 110000,
+    "travel_monthly": 18000,
+    "medical_monthly": 8000,
+    "education_monthly": 35000,
+    "insurance_premium_monthly": 12000,
+    "entertainment_monthly": 15000,
+    "miscellaneous_monthly": 20000,
     "rent_monthly": 0
   },
   "loans": [
     {
-      "name": "Home Loan - Primary Residence",
+      "name": "Home Loan - Andheri Apartment",
       "loan_type": "home",
-      "principal_outstanding": 4500000,
-      "interest_rate_annual": 0.085,
-      "emi": 42000,
-      "tenure_months_remaining": 180,
-      "original_principal": 6000000,
-      "prepayment_amount": 200000
+      "principal_outstanding": 7200000,
+      "interest_rate_annual": 8.6,
+      "emi": 68000,
+      "tenure_months_remaining": 168,
+      "original_principal": 9500000,
+      "prepayment_amount": 300000
     },
     {
-      "name": "Car Loan",
+      "name": "Car Loan - Family SUV",
       "loan_type": "car",
-      "principal_outstanding": 450000,
-      "interest_rate_annual": 0.095,
-      "emi": 15000,
-      "tenure_months_remaining": 36,
-      "original_principal": 800000,
+      "principal_outstanding": 650000,
+      "interest_rate_annual": 9.5,
+      "emi": 18500,
+      "tenure_months_remaining": 42,
+      "original_principal": 1100000,
+      "prepayment_amount": 50000
+    },
+    {
+      "name": "Education Loan - Elder Child UG",
+      "loan_type": "education",
+      "principal_outstanding": 400000,
+      "interest_rate_annual": 10.5,
+      "emi": 9500,
+      "tenure_months_remaining": 48,
+      "original_principal": 600000,
       "prepayment_amount": 0
+    },
+    {
+      "name": "Credit Card Outstanding",
+      "loan_type": "credit_card",
+      "principal_outstanding": 85000,
+      "interest_rate_annual": 36.0,
+      "emi": 15000,
+      "tenure_months_remaining": 8,
+      "original_principal": 120000,
+      "prepayment_amount": 85000
     }
   ],
   "assets": {
-    "savings": 350000,
-    "fd": 800000,
-    "ppf": 650000,
-    "epf": 1200000,
-    "nps": 400000,
-    "mutual_funds": 2500000,
-    "stocks": 900000,
-    "gold": 400000,
-    "real_estate": 12000000,
-    "cash": 50000,
-    "emergency_fund": 400000,
-    "other": 100000,
-    "reit": 150000,
-    "invit": 0
+    "savings": 420000,
+    "fd": 1500000,
+    "ppf": 980000,
+    "epf": 2100000,
+    "nps": 750000,
+    "mutual_funds": 4200000,
+    "stocks": 1650000,
+    "gold": 650000,
+    "real_estate": 18500000,
+    "cash": 75000,
+    "emergency_fund": 650000,
+    "other": 200000,
+    "reit": 300000,
+    "invit": 150000
   },
   "insurance": {
-    "health_cover": 1000000,
-    "health_premium_annual": 25000,
-    "life_cover": 10000000,
-    "life_premium_annual": 18000,
-    "accident_cover": 0,
-    "accident_premium_annual": 0,
-    "critical_illness_cover": 0,
-    "critical_illness_premium_annual": 0
+    "health_cover": 1500000,
+    "health_premium_annual": 42000,
+    "life_cover": 15000000,
+    "life_premium_annual": 28000,
+    "accident_cover": 2500000,
+    "accident_premium_annual": 3500,
+    "critical_illness_cover": 1000000,
+    "critical_illness_premium_annual": 12000
   },
   "investments": [
     {
-      "name": "Flexi Cap SIP",
+      "name": "Flexi Cap SIP (Core Equity)",
       "category": "mutual_funds",
-      "amount": 1500000,
-      "monthly_sip": 40000,
-      "expected_return": 0.13
+      "amount": 2200000,
+      "monthly_sip": 50000,
+      "expected_return": 13,
+      "is_lumpsum": false
     },
     {
-      "name": "Large Cap Index",
+      "name": "Nifty 50 Index Fund",
       "category": "mutual_funds",
-      "amount": 1000000,
+      "amount": 1200000,
+      "monthly_sip": 20000,
+      "expected_return": 12,
+      "is_lumpsum": false
+    },
+    {
+      "name": "Mid Cap Growth Fund",
+      "category": "mutual_funds",
+      "amount": 800000,
       "monthly_sip": 15000,
-      "expected_return": 0.12
+      "expected_return": 14,
+      "is_lumpsum": false
     },
     {
       "name": "Direct Equity Portfolio",
       "category": "stocks",
-      "amount": 900000,
+      "amount": 1650000,
       "monthly_sip": 10000,
-      "expected_return": 0.14
+      "expected_return": 14,
+      "is_lumpsum": false
     },
     {
-      "name": "Sovereign Gold Bond / Gold ETF",
+      "name": "Gold ETF / SGB",
       "category": "gold",
-      "amount": 400000,
+      "amount": 650000,
       "monthly_sip": 5000,
-      "expected_return": 0.08
+      "expected_return": 8,
+      "is_lumpsum": false
+    },
+    {
+      "name": "Liquid Fund (Emergency Buffer)",
+      "category": "debt",
+      "amount": 400000,
+      "monthly_sip": 0,
+      "expected_return": 6.5,
+      "is_lumpsum": true
     }
   ],
   "goals": [
     {
-      "name": "Child Higher Education",
+      "name": "Elder Child Engineering Degree",
+      "goal_type": "children_education",
+      "current_cost": 3500000,
+      "target_year": 4,
+      "priority": "high",
+      "already_saved": 600000,
+      "inflation_rate": 8,
+      "expected_return": 11,
+      "notes": "Includes tuition, hostel, and coaching for 4-year programme"
+    },
+    {
+      "name": "Younger Child School + UG Corpus",
       "goal_type": "children_education",
       "current_cost": 2500000,
-      "target_year": 15,
+      "target_year": 12,
       "priority": "high",
-      "already_saved": 300000
+      "already_saved": 350000,
+      "inflation_rate": 8,
+      "expected_return": 12,
+      "notes": "Long-horizon education corpus"
     },
     {
-      "name": "Dream Home Upgrade",
-      "goal_type": "house",
-      "current_cost": 5000000,
-      "target_year": 10,
-      "priority": "medium",
-      "already_saved": 500000
-    },
-    {
-      "name": "Europe Vacation",
-      "goal_type": "vacation",
-      "current_cost": 400000,
-      "target_year": 3,
-      "priority": "low",
-      "already_saved": 50000
-    },
-    {
-      "name": "Child Marriage",
+      "name": "Children Marriage Fund",
       "goal_type": "children_marriage",
-      "current_cost": 2000000,
-      "target_year": 22,
+      "current_cost": 2500000,
+      "target_year": 18,
       "priority": "medium",
-      "already_saved": 100000
+      "already_saved": 200000,
+      "inflation_rate": 7,
+      "expected_return": 11,
+      "notes": "Combined fund for both children"
     },
     {
-      "name": "Comfortable Retirement",
+      "name": "Second Home Downpayment",
+      "goal_type": "house",
+      "current_cost": 4000000,
+      "target_year": 8,
+      "priority": "medium",
+      "already_saved": 500000,
+      "inflation_rate": 5,
+      "expected_return": 10,
+      "notes": "20% downpayment for a vacation / rental home"
+    },
+    {
+      "name": "Europe Family Vacation",
+      "goal_type": "vacation",
+      "current_cost": 600000,
+      "target_year": 2,
+      "priority": "low",
+      "already_saved": 120000,
+      "inflation_rate": 6,
+      "expected_return": 7,
+      "notes": "2-week trip for family of four"
+    },
+    {
+      "name": "Business Expansion Capital",
+      "goal_type": "business",
+      "current_cost": 1500000,
+      "target_year": 5,
+      "priority": "medium",
+      "already_saved": 250000,
+      "inflation_rate": 6,
+      "expected_return": 10,
+      "notes": "Working capital for consulting practice expansion"
+    },
+    {
+      "name": "Comfortable Early Retirement",
       "goal_type": "retirement",
       "current_cost": 0,
-      "target_year": 25,
+      "target_year": 20,
       "priority": "high",
       "already_saved": 0,
-      "notes": "Handled primarily by Retirement module"
+      "notes": "Primary retirement planning handled in Retirement module"
     }
   ],
   "tax": {
@@ -160,12 +234,12 @@
     "section_80c_investments": 150000,
     "section_80ccd_1b": 50000,
     "section_80d_self": 25000,
-    "section_80d_parents": 25000,
+    "section_80d_parents": 50000,
     "home_loan_interest": 200000,
     "is_senior_citizen": false,
-    "parents_senior_citizen": false,
-    "ltcg_equity": 80000,
-    "stcg_equity": 20000,
+    "parents_senior_citizen": true,
+    "ltcg_equity": 180000,
+    "stcg_equity": 45000,
     "other_deductions": 0
   },
   "risk_profile": "moderate",
@@ -175,16 +249,19 @@
     "q3": "c",
     "q4": "c",
     "q5": "d",
-    "q6": "d",
+    "q6": "c",
     "q7": "c",
     "q8": "d",
     "q9": "c",
-    "q10": "c"
+    "q10": "d"
   },
   "assumptions": {
-    "general_inflation": 0.06,
-    "healthcare_inflation": 0.08,
-    "expected_equity_return": 0.12,
-    "safe_withdrawal_rate": 0.04
+    "general_inflation": 6,
+    "healthcare_inflation": 8,
+    "education_inflation": 8,
+    "expected_equity_return": 12,
+    "expected_debt_return": 7,
+    "safe_withdrawal_rate": 4,
+    "salary_growth_rate": 8
   }
 }

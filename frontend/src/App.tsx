@@ -6,6 +6,7 @@ import Dashboard from '@/pages/Dashboard'
 import Clients from '@/pages/Clients'
 import Planner from '@/pages/Planner'
 import WhatIf from '@/pages/WhatIf'
+import Glossary from '@/pages/Glossary'
 
 function Protected({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('access_token')
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/clients" element={<Clients />} />
           <Route path="/planner" element={<Planner />} />
           <Route path="/what-if" element={<WhatIf />} />
+          <Route path="/glossary" element={<Glossary />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

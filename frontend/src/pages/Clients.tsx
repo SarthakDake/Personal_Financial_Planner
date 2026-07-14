@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { deleteClient, listClients } from '@/lib/api'
+import { deleteClient, listClients, seedDemoClient } from '@/lib/api'
 import type { Client } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, Pencil } from 'lucide-react'
+import { Plus, Trash2, Pencil, Sparkles } from 'lucide-react'
 
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([])
@@ -19,16 +19,28 @@ export default function Clients() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between animate-fade-up">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between animate-fade-up">
         <div>
-          <h1 className="font-display text-4xl text-navy dark:text-white">Clients</h1>
+          <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">Clients</h1>
           <p className="mt-1 text-sm text-muted">Manage configurable client profiles — no hardcoded data.</p>
         </div>
-        <Link to="/planner">
-          <Button>
-            <Plus className="h-4 w-4" /> Add Client
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              await seedDemoClient()
+              refresh()
+            }}
+          >
+            <Sparkles className="h-4 w-4" /> Load Demo Family
           </Button>
-        </Link>
+          <Link to="/planner">
+            <Button size="sm">
+              <Plus className="h-4 w-4" /> Add Client
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">

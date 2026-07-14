@@ -84,9 +84,9 @@ export default function WhatIf() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-up">
-        <h1 className="font-display text-4xl text-navy dark:text-white">What-If Analysis</h1>
+        <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">What-If Analysis</h1>
         <p className="mt-1 text-sm text-muted">
-          Interactive sliders recalculate the plan in real time.
+          Sliders use whole percentages (e.g. inflation 6 = 6%). SIP change is Monthly ₹.
           {isPending ? ' Updating…' : ''}
         </p>
       </div>
@@ -113,10 +113,10 @@ export default function WhatIf() {
             </div>
             <Slider label="Income change" value={income} min={-50} max={50} step={1} onChange={setIncome} suffix="%" />
             <Slider label="Expense change" value={expenses} min={-50} max={50} step={1} onChange={setExpenses} suffix="%" />
-            <Slider label="Additional SIP" value={sip} min={-50000} max={100000} step={1000} onChange={setSip} suffix=" ₹" />
-            <Slider label="Inflation" value={inflation} min={2} max={12} step={0.5} onChange={setInflation} suffix="%" />
-            <Slider label="Expected returns" value={returns} min={4} max={18} step={0.5} onChange={setReturns} suffix="%" />
-            <Slider label="Loan interest change" value={loanRate} min={-30} max={30} step={1} onChange={setLoanRate} suffix="%" />
+            <Slider label="Additional SIP (Monthly ₹)" value={sip} min={-50000} max={100000} step={1000} onChange={setSip} suffix=" ₹/mo" />
+            <Slider label="Inflation (Annual %)" value={inflation} min={2} max={12} step={0.5} onChange={setInflation} suffix="%" />
+            <Slider label="Expected returns (Annual %)" value={returns} min={4} max={18} step={0.5} onChange={setReturns} suffix="%" />
+            <Slider label="Loan interest change (%)" value={loanRate} min={-30} max={30} step={1} onChange={setLoanRate} suffix="%" />
             <Slider label="Retirement age" value={retAge} min={45} max={70} step={1} onChange={setRetAge} />
           </CardContent>
         </Card>

@@ -77,8 +77,11 @@ class LoanSchema(BaseModel):
     name: str
     loan_type: str = "other"
     principal_outstanding: float
-    interest_rate_annual: float
-    emi: float = 0
+    interest_rate_annual: float = Field(
+        ...,
+        description="Annual interest rate as a percentage, e.g. 8.5 for 8.5% (not 0.085)",
+    )
+    emi: float = Field(0, description="Monthly EMI amount in INR")
     tenure_months_remaining: int
     original_principal: float = 0
     prepayment_amount: float = 0
@@ -116,9 +119,12 @@ class InsuranceSchema(BaseModel):
 class InvestmentSchema(BaseModel):
     name: str
     category: str = "mutual_funds"
-    amount: float = 0
-    monthly_sip: float = 0
-    expected_return: float = 0.12
+    amount: float = Field(0, description="Current invested amount / lumpsum corpus in INR")
+    monthly_sip: float = Field(0, description="Monthly SIP amount in INR")
+    expected_return: float = Field(
+        12,
+        description="Expected annual return as a percentage, e.g. 12 for 12% (not 0.12)",
+    )
     start_date: Optional[str] = None
     is_lumpsum: bool = False
 
@@ -126,12 +132,19 @@ class InvestmentSchema(BaseModel):
 class GoalSchema(BaseModel):
     name: str
     goal_type: str = "custom"
-    current_cost: float
-    target_year: int
+    current_cost: float = Field(..., description="Today's cost of the goal in INR")
+    target_year: int = Field(
+        ...,
+        description="Years from now (<100), age at goal (100-1900), or calendar year (>1900)",
+    )
     priority: str = "medium"
-    already_saved: float = 0
-    inflation_rate: Optional[float] = None
-    expected_return: Optional[float] = None
+    already_saved: float = Field(0, description="Amount already saved toward this goal in INR")
+    inflation_rate: Optional[float] = Field(
+        None, description="Goal inflation as %, e.g. 8 for 8%. Null = system default"
+    )
+    expected_return: Optional[float] = Field(
+        None, description="Expected return as %, e.g. 12 for 12%. Null = risk-based default"
+    )
     notes: str = ""
 
 
@@ -152,13 +165,15 @@ class TaxSchema(BaseModel):
 
 
 class AssumptionsSchema(BaseModel):
-    general_inflation: Optional[float] = None
-    healthcare_inflation: Optional[float] = None
-    education_inflation: Optional[float] = None
-    expected_equity_return: Optional[float] = None
-    expected_debt_return: Optional[float] = None
-    safe_withdrawal_rate: Optional[float] = None
-    salary_growth_rate: Optional[float] = None
+    """Optional overrides — all rates as percentages (6 = 6%). Zero/null = system default."""
+
+    general_inflation: Optional[float] = Field(None, description="General inflation % p.a.")
+    healthcare_inflation: Optional[float] = Field(None, description="Healthcare inflation % p.a.")
+    education_inflation: Optional[float] = Field(None, description="Education inflation % p.a.")
+    expected_equity_return: Optional[float] = Field(None, description="Expected equity return % p.a.")
+    expected_debt_return: Optional[float] = Field(None, description="Expected debt return % p.a.")
+    safe_withdrawal_rate: Optional[float] = Field(None, description="Safe withdrawal rate % p.a.")
+    salary_growth_rate: Optional[float] = Field(None, description="Salary growth rate % p.a.")
 
 
 class ClientProfileSchema(BaseModel):

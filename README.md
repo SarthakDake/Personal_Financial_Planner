@@ -94,10 +94,26 @@ Demo advisor (auto-seeded on startup):
 | Email    | `advisor@wealthcraft.example` |
 | Password | `Advisor@123`                 |
 
-Seed sample client:
+Seed sample client (Priya & Rohan Mehta — full real-life family scenario):
 
 ```bash
 PYTHONPATH=. python3 scripts/seed_demo_client.py
+```
+
+Or click **Load Demo Family** in the Dashboard / Clients UI after login.
+
+### Input conventions
+
+- Money fields are labeled **(Monthly ₹)** or **(Annual ₹)** — or lump-sum balances/covers.
+- All rates use **whole percentages**: enter `8.5` for 8.5%, never `0.085`.
+- Terminology guide: in-app **Glossary** page (`/glossary`).
+
+### Tests
+
+```bash
+PYTHONPATH=. pytest -q                  # full suite (unit + API + reports)
+PYTHONPATH=. pytest tests/test_api_integration.py -q
+PYTHONPATH=. python3 scripts/run_manual_checks.py
 ```
 
 ### Frontend

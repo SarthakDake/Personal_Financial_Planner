@@ -191,6 +191,63 @@ def get_assumptions(current_user: User = Depends(get_current_user)):
     return _engine().assumptions
 
 
+@router.get("/demo-profile")
+def demo_profile(current_user: User = Depends(get_current_user)):
+    """Return the sample real-life demo client profile (rates as percentages)."""
+    import json
+
+    path = Path(settings.sample_data_dir) / "demo_client.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Demo profile not found")
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@router.post("/seed-demo-client")
+def seed_demo_client(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Create or refresh the demo client for the logged-in advisor."""
+    import json
+
+    path = Path(settings.sample_data_dir) / "demo_client.json"
+    with open(path, encoding="utf-8") as f:
+        profile = json.load(f)
+
+    name = profile.get("personal", {}).get("full_name", "Demo Client")
+    existing = (
+        db.query(Client)
+        .filter(Client.advisor_id == current_user.id, Client.full_name == name)
+        .first()
+    )
+    if existing:
+        existing.profile_data = profile
+        existing.email = profile.get("personal", {}).get("email", "")
+        existing.phone = profile.get("personal", {}).get("phone", "")
+        existing.risk_profile = profile.get("risk_profile", "moderate")
+        existing.notes = "Real-life sample family profile for end-to-end testing."
+        existing.is_active = True
+        db.commit()
+        db.refresh(existing)
+        return {"id": existing.id, "full_name": existing.full_name, "action": "updated"}
+
+    client = Client(
+        advisor_id=current_user.id,
+        full_name=name,
+        email=profile.get("personal", {}).get("email", ""),
+        phone=profile.get("personal", {}).get("phone", ""),
+        pan=profile.get("personal", {}).get("pan", ""),
+        profile_data=profile,
+        risk_profile=profile.get("risk_profile", "moderate"),
+        notes="Real-life sample family profile for end-to-end testing.",
+    )
+    db.add(client)
+    db.commit()
+    db.refresh(client)
+    return {"id": client.id, "full_name": client.full_name, "action": "created"}
+
+
 @router.get("/recommendations-config")
 def recommendations_config(current_user: User = Depends(get_current_user)):
     import json

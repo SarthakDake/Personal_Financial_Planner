@@ -272,7 +272,14 @@ class ClientFinancialProfile:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> ClientFinancialProfile:
-        """Build profile from a plain dictionary (API / form payload)."""
+        """Build profile from a plain dictionary (API / form payload).
+
+        Rate fields in the payload are user-facing percentages (e.g. 8.5 for 8.5%)
+        and are converted to decimals before constructing engine models.
+        """
+        from utils.percent import convert_profile_rates_to_decimal
+
+        data = convert_profile_rates_to_decimal(data)
         personal_data = data.get("personal", {})
         income_data = data.get("income", {})
         expenses_data = data.get("expenses", {})
@@ -324,7 +331,7 @@ class ClientFinancialProfile:
                 category=i.get("category", "mutual_funds"),
                 amount=float(i.get("amount", 0)),
                 monthly_sip=float(i.get("monthly_sip", 0)),
-                expected_return=float(i.get("expected_return", 0.12)),
+                expected_return=float(i.get("expected_return", 0.12)),  # already decimal after convert
                 start_date=i.get("start_date"),
                 is_lumpsum=bool(i.get("is_lumpsum", False)),
             )
