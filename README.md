@@ -1,128 +1,227 @@
 # WealthCraft — Professional Financial Planning System
 
-Enterprise-grade financial planning platform for wealth advisors. Generate fully automated, consulting-quality financial plans for **any client** using configurable forms — **no hardcoded personal data**.
+Developer onboarding guide for the full stack. Use this document to understand architecture, run the app locally, find credentials, and navigate the codebase.
 
-Inspired by workflows used at leading Indian wealth firms (DSP, ICICI Prudential, Motilal Oswal, Edelweiss, HDFC Securities), with modular architecture and production-ready reporting.
-
----
-
-## Features
-
-- **Multi-client CRM** with JWT authentication
-- **Configurable inputs**: personal, income, expenses, loans, assets, insurance, investments, goals, tax, risk, assumptions
-- **Financial engine** (pure Python / NumPy / Pandas / SciPy):
-  - Net worth, cash flow, savings & DTI ratios
-  - Emergency fund, goal SIP/lumpsum, retirement corpus
-  - EMI amortization & prepayment analysis
-  - Old vs New Indian tax regime comparison (FY 2025-26)
-  - HLV / insurance need analysis
-  - Portfolio allocation & JSON-driven recommendations (no hardcoded schemes)
-  - Monte Carlo retirement simulation, FIRE number, health score
-  - Scenario & what-if analysis
-- **One-click generation**: Dashboard + Excel + PDF + Charts + Recommendations
-- **Excel workbook**: 30+ professionally formatted sheets
-- **PDF plan**: multi-section 30–50 page advisory report
-- **Dark / light UI** with Recharts dashboards
+WealthCraft is an Indian wealth-advisory style planning platform: advisors authenticate with JWT, manage multiple clients, run a pure-Python financial engine, and generate Excel + PDF reports in one click.
 
 ---
 
-## Architecture
+## Table of contents
 
-```
-frontend/           React + TypeScript + Tailwind + shadcn-style UI
-backend/            FastAPI + JWT auth + REST API
-financial_engine/   Pure Python calculation engine
-excel_generator/    openpyxl multi-sheet workbook
-pdf_generator/      ReportLab multi-page plan
-charts/             Matplotlib chart PNGs
-database/           SQLAlchemy models (SQLite / PostgreSQL)
-config/             Assumptions, recommendations, risk questionnaire (JSON)
-sample_data/        Demo client profile (illustrative only)
-tests/              Unit & integration tests
-deploy/             Nginx config for Docker
-```
+1. [Default credentials](#default-credentials)
+2. [What the application does](#what-the-application-does)
+3. [Tech stack](#tech-stack)
+4. [Repository structure](#repository-structure)
+5. [How the system works](#how-the-system-works)
+6. [Prerequisites](#prerequisites)
+7. [Local setup](#local-setup)
+8. [Environment variables](#environment-variables)
+9. [Input conventions](#input-conventions)
+10. [Important product rules](#important-product-rules)
+11. [API overview](#api-overview)
+12. [Configuration files](#configuration-files)
+13. [Reports (Excel & PDF)](#reports-excel--pdf)
+14. [Data storage & security](#data-storage--security)
+15. [Testing](#testing)
+16. [Docker](#docker)
+17. [Frontend routes](#frontend-routes)
+18. [Troubleshooting](#troubleshooting)
+19. [Further docs](#further-docs)
 
 ---
 
-## Quick Start (Development)
+## Default credentials
 
-### Prerequisites
+These are **auto-seeded on backend startup** (see `backend/main.py`). Use them for local development and demos.
 
-- **Python 3.11 or 3.12** (recommended — avoid 3.14 for now; several scientific packages may lack wheels)
-- Node.js 20+
-- npm
+| Item | Value |
+|------|--------|
+| **Advisor email** | `advisor@wealthcraft.example` |
+| **Advisor password** | `Advisor@123` |
+| **Role** | `advisor` |
+| **Demo client family** | Priya & Rohan Mehta (from `sample_data/demo_client.json`) |
 
-### Backend
+**Load the demo client after login**
 
-```bash
-# Prefer Python 3.12 if multiple versions are installed:
-#   python3.12 -m venv .venv
-python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install --upgrade pip
-pip install -r requirements.txt
-cp .env.example .env
-
-export PYTHONPATH=.
-uvicorn backend.main:app --reload --port 8000
-```
-
-Local development uses **SQLite** — no PostgreSQL install required.
-
-PostgreSQL (optional / production):
-
-```bash
-pip install -r requirements-postgres.txt
-# DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/financial_planner
-```
-
-#### Install troubleshooting
-
-| Error | Fix |
-|-------|-----|
-| `pg_config executable not found` / `psycopg2-binary` build fails | You don’t need it for local SQLite. Pull latest `requirements.txt` (Postgres is optional) or use Python 3.12. |
-| `uvicorn: command not found` | Install failed earlier — recreate the venv, then `pip install -r requirements.txt` and ensure the venv is activated. |
-| Packages fail on Python 3.14 | Create the venv with 3.12: `python3.12 -m venv .venv` |
-
-API docs: http://localhost:8000/docs  
-Health: http://localhost:8000/health
-
-Demo advisor (auto-seeded on startup):
-
-| Field    | Value                         |
-|----------|-------------------------------|
-| Email    | `advisor@wealthcraft.example` |
-| Password | `Advisor@123`                 |
-
-Seed sample client (Priya & Rohan Mehta — full real-life family scenario):
+- UI: Dashboard → **Load Demo** / **Load Demo Family**
+- Or CLI:
 
 ```bash
 PYTHONPATH=. python3 scripts/seed_demo_client.py
 ```
 
-Or click **Load Demo Family** in the Dashboard / Clients UI after login.
+> Change `SECRET_KEY` and demo passwords before any real deployment. Never use these credentials in production.
 
-### Input conventions
+---
 
-- Money fields are labeled **(Monthly ₹)** or **(Annual ₹)** — or lump-sum balances/covers.
-- All rates use **whole percentages**: enter `8.5` for 8.5%, never `0.085`.
-- Mandatory fields are validated step-by-step (name, ages, income, living expenses, risk, and any added loans/investments/goals).
-- Terminology guide: in-app **Glossary** page (`/glossary`).
+## What the application does
 
-### Data persistence & security
+Advisors can:
 
-Client data is saved to **`data/financial_planner.db`** (SQLite). Stopping the app does **not** delete it.  
-Details: [`docs/DATA_STORAGE.md`](docs/DATA_STORAGE.md).
+1. Register / log in (JWT)
+2. Create and edit **fully configurable** client profiles (no hardcoded personal data in the engine)
+3. Preview a plan on the dashboard (net worth, allocation, goals, tax, insurance, health score)
+4. Run **what-if** adjustments
+5. Generate **Excel + PDF + charts** in one API call
+6. Download reports per client
 
-### Tests
+Financial engine coverage:
 
-```bash
-PYTHONPATH=. pytest -q                  # full suite (unit + API + reports)
-PYTHONPATH=. pytest tests/test_api_integration.py -q
-PYTHONPATH=. python3 scripts/run_manual_checks.py
+- Net worth, cash flow, savings & DTI ratios  
+- Emergency fund, goal SIP / lumpsum funding  
+- Retirement corpus, safe withdrawal rate, Monte Carlo, FIRE  
+- EMI amortization & prepayment analysis  
+- Old vs New Indian tax regimes  
+- HLV / insurance gap analysis  
+- Portfolio allocation & JSON-driven category recommendations  
+- Scenario analysis & financial health score  
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS 4, Recharts, React Router, Axios, Zod |
+| Backend | FastAPI, SQLAlchemy, Pydantic, python-jose (JWT), bcrypt |
+| Engine | Pure Python + NumPy / Pandas / SciPy |
+| Excel | openpyxl / XlsxWriter |
+| PDF | ReportLab + embedded DejaVu fonts (`₹` support) |
+| Charts | Matplotlib (PNG for reports), Recharts (UI) |
+| DB (dev) | SQLite → `data/financial_planner.db` |
+| DB (prod) | PostgreSQL via Docker Compose |
+
+**Recommended Python:** 3.11 or 3.12 (avoid 3.14 for scientific wheels).  
+**Node.js:** 20+
+
+---
+
+## Repository structure
+
+```text
+.
+├── backend/                 # FastAPI app, auth, routers, schemas
+│   ├── main.py              # App entry, CORS, demo user seed
+│   ├── auth.py              # JWT + bcrypt helpers
+│   ├── schemas.py           # Request/response validation
+│   └── routers/
+│       ├── auth.py          # register / login / me
+│       ├── clients.py       # multi-client CRM
+│       └── planning.py      # preview, generate, what-if, downloads
+├── financial_engine/        # Calculation engine (no FastAPI dependency)
+│   ├── engine.py            # Orchestrates a full plan
+│   ├── models.py            # Dataclasses / profile parsing
+│   ├── calculators/         # TVM, tax, loans, retirement, etc.
+│   ├── scenarios.py         # Best / expected / worst
+│   └── risk_profiler.py
+├── excel_generator/         # Multi-sheet workbook
+├── pdf_generator/           # Dark neon PDF report
+│   └── fonts/               # DejaVuSans — required for ₹ in PDF
+├── charts/                  # Matplotlib chart generator
+├── database/                # SQLAlchemy models + session
+├── config/                  # JSON assumptions + settings.py
+├── frontend/                # React SPA
+│   └── src/
+│       ├── pages/           # Landing, Login, Dashboard, Planner, …
+│       ├── components/      # Layout + UI primitives
+│       ├── lib/             # api.ts, validation, utils
+│       └── types/           # Shared TS types + emptyProfile()
+├── sample_data/             # demo_client.json (illustrative family)
+├── scripts/                 # seed_demo_client, run_manual_checks
+├── tests/                   # unit + API + report tests
+├── docs/                    # DATA_STORAGE.md, API.md
+├── deploy/                  # Nginx for Docker frontend
+├── data/                    # SQLite DB (created at runtime — do not delete casually)
+├── output/                  # Generated Excel / PDF / charts
+├── requirements.txt
+├── requirements-postgres.txt
+├── docker-compose.yml
+└── Dockerfile
 ```
 
-### Frontend
+---
+
+## How the system works
+
+```text
+Browser (Vite :5173)
+    │  /api/v1/*  (proxied)
+    ▼
+FastAPI (uvicorn :8000)
+    │  JWT auth
+    ├─► SQLAlchemy  →  SQLite / PostgreSQL
+    └─► FinancialPlanningEngine.generate_plan(profile)
+            ├─► charts.ChartGenerator
+            ├─► excel_generator.ExcelReportGenerator
+            └─► pdf_generator.PDFReportGenerator
+```
+
+**Typical advisor flow**
+
+1. `POST /auth/login` → store `access_token` in `localStorage`
+2. Create/update client (`/clients`) with a full `profile_data` JSON
+3. `POST /planning/preview` for dashboard numbers (no files)
+4. `POST /planning/generate` with `generate_excel`, `generate_pdf`, `generate_charts`, `save`
+5. Download via `/planning/download/excel/{client_id}` or `/pdf/{client_id}`
+
+**Net worth formula**
+
+```text
+Net Worth = Total Assets (Assets step) − Sum of loan principal outstanding
+```
+
+Investment SIP rows are used for cash-flow / projections; **balances for net worth come from the Assets section**. If loans are filled and assets are left at ₹0, net worth will be negative.
+
+---
+
+## Prerequisites
+
+- Python 3.11 or 3.12  
+- Node.js 20+ and npm  
+- Git  
+
+Optional for production-like runs: Docker + Docker Compose.
+
+---
+
+## Local setup
+
+### 1. Clone & environment file
+
+```bash
+git clone <repo-url>
+cd Personal_Financial_Planner   # or your local folder name
+cp .env.example .env
+```
+
+### 2. Backend
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+export PYTHONPATH=.
+uvicorn backend.main:app --reload --port 8000
+```
+
+| URL | Purpose |
+|-----|---------|
+| http://localhost:8000/docs | Swagger UI |
+| http://localhost:8000/redoc | ReDoc |
+| http://localhost:8000/health | Health check |
+
+SQLite is used by default — no Postgres install required for local work.
+
+Optional Postgres driver:
+
+```bash
+pip install -r requirements-postgres.txt
+# then set DATABASE_URL in .env
+```
+
+### 3. Frontend
 
 ```bash
 cd frontend
@@ -130,59 +229,161 @@ npm install
 npm run dev
 ```
 
-App: http://localhost:5173
+App: **http://localhost:5173**
+
+Vite proxies `/api` and `/health` to `http://localhost:8000` (see `frontend/vite.config.ts`).
+
+### 4. First login
+
+1. Open http://localhost:5173/login  
+2. Use `advisor@wealthcraft.example` / `Advisor@123`  
+3. Click **Load Demo** on the Dashboard  
 
 ---
 
-## Docker (Production-ready)
+## Environment variables
 
-```bash
-docker compose up --build
-```
+Primary file: `.env` (from `.env.example`).
 
-- Frontend: http://localhost
-- Backend API: http://localhost:8000
-- PostgreSQL: localhost:5432
+| Variable | Default / notes |
+|----------|-----------------|
+| `SECRET_KEY` | JWT signing key — change in production |
+| `DATABASE_URL` | `sqlite:///./data/financial_planner.db` |
+| `API_PREFIX` | `/api/v1` |
+| `CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | `60` |
+| `REFRESH_TOKEN_EXPIRE_DAYS` | `7` |
+| `CONFIG_DIR` | `./config` |
+| `REPORTS_DIR` | `./output/reports` |
+| `CHARTS_DIR` | `./output/charts` |
+| `ADVISOR_FIRM_*` | Branding printed on Excel/PDF |
 
-Set `SECRET_KEY` in the environment before production deployment.
+Frontend optional:
+
+| Variable | Notes |
+|----------|--------|
+| `VITE_API_URL` | Defaults to `/api/v1` (use proxy in dev) |
 
 ---
 
-## API Overview
+## Input conventions
+
+| Input type | How to enter |
+|------------|----------------|
+| Money | Full rupees — labels say **Monthly ₹**, **Annual ₹**, or lump-sum |
+| Interest / returns / inflation | **Whole percent** — enter `8.5` for 8.5%, **not** `0.085` |
+| Ages | Years (client age, retirement age, life expectancy) |
+| Loan tenure | Months remaining |
+| Insurance cover | Sum assured (₹); premiums are **annual** ₹ |
+
+The UI and API accept percentages; `ClientFinancialProfile.from_dict` / `utils/percent.py` convert to decimals for engine math.
+
+Mandatory validation (Zod + Pydantic): name, ages, income, living expenses, risk profile, and any added loans / investments / goals.
+
+In-app glossary: `/glossary`.
+
+---
+
+## Important product rules
+
+- **No hardcoded client PII** in the engine — all profiles are form/API driven.  
+- Sample data in `sample_data/` is fictional.  
+- Recommendations are **category-based** (`config/investment_recommendations.json`), not specific fund schemes.  
+- PDF uses bundled **DejaVu** fonts so the Indian Rupee symbol `₹` renders correctly.  
+- Do **not** delete `data/` while the API is running (SQLite file replace causes stale JWT / “Could not validate credentials”).  
+- Theme: dark neon charcoal UI + matching dark PDF (`#0D0D0D` / cyan `#00D1FF`).
+
+---
+
+## API overview
+
+Base path: `/api/v1`  
+Auth header: `Authorization: Bearer <access_token>`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/v1/auth/register` | Register advisor |
-| POST | `/api/v1/auth/login` | JWT login |
-| GET | `/api/v1/clients` | List clients |
-| POST | `/api/v1/clients` | Create client profile |
-| PUT | `/api/v1/clients/{id}` | Update profile |
-| POST | `/api/v1/planning/preview` | Calculate plan (no files) |
-| POST | `/api/v1/planning/generate` | One-click full generation |
-| POST | `/api/v1/planning/what-if` | Slider adjustments |
-| GET | `/api/v1/planning/risk-questionnaire` | Risk questions |
-| POST | `/api/v1/planning/risk-score` | Score answers |
-| GET | `/api/v1/planning/download/excel/{client_id}` | Excel download |
-| GET | `/api/v1/planning/download/pdf/{client_id}` | PDF download |
+| POST | `/auth/register` | Create advisor |
+| POST | `/auth/login` | JSON login → JWT |
+| POST | `/auth/login/form` | OAuth2 form login (Swagger Authorize) |
+| GET | `/auth/me` | Current advisor |
+| GET | `/clients` | List advisor’s clients |
+| POST | `/clients` | Create client + profile |
+| GET | `/clients/{id}` | Get client |
+| PUT | `/clients/{id}` | Update profile |
+| DELETE | `/clients/{id}` | Soft-delete / remove |
+| POST | `/planning/preview` | Calculate plan (no files) |
+| POST | `/planning/generate` | Excel + PDF + charts + optional save |
+| POST | `/planning/what-if` | Scenario adjustments |
+| GET | `/planning/risk-questionnaire` | Risk questions |
+| POST | `/planning/risk-score` | Score answers |
+| GET | `/planning/demo-profile` | Demo JSON (rates as %) |
+| POST | `/planning/seed-demo-client` | Upsert demo family for logged-in advisor |
+| GET | `/planning/download/excel/{client_id}` | Download latest Excel |
+| GET | `/planning/download/pdf/{client_id}` | Download latest PDF |
 
-Full interactive schema: `/docs` (Swagger) and `/redoc`.
+Full schema: http://localhost:8000/docs · also see [`docs/API.md`](docs/API.md).
+
+**Login example**
+
+```bash
+curl -s -X POST http://localhost:8000/api/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"advisor@wealthcraft.example","password":"Advisor@123"}'
+```
 
 ---
 
-## Configuration
+## Configuration files
 
-All planning assumptions live in JSON (or can be extended via DB `assumption_sets`):
+| File | Purpose |
+|------|---------|
+| `config/assumptions.json` | Inflation, returns, tax limits, SWR, Monte Carlo, scenarios |
+| `config/investment_recommendations.json` | Allocation templates by risk profile |
+| `config/risk_questionnaire.json` | Questions + score bands |
+| `config/settings.py` | Pydantic settings from env |
 
-- `config/assumptions.json` — inflation, returns, tax limits, SWR, scenarios
-- `config/investment_recommendations.json` — category allocations by risk (no scheme names hardcoded)
-- `config/risk_questionnaire.json` — risk scoring bands
+Override client-level assumptions via the profile’s `assumptions` object in the Planner.
 
-Environment variables: see `.env.example`.
+---
 
-Database:
+## Reports (Excel & PDF)
 
-- **Development**: SQLite (`sqlite:///./data/financial_planner.db`)
-- **Production**: PostgreSQL via `DATABASE_URL=postgresql+psycopg2://...`
+### Excel (`excel_generator/`)
+
+30+ sheets including Cover, Dashboard, Income/Expenses, Assets/Liabilities, Goals, Retirement, Tax, Loans, Scenarios, Recommendations, Glossary, Assumptions.
+
+### PDF (`pdf_generator/`)
+
+Multi-page dark-theme advisory report:
+
+Executive Summary → Health Score → Risk → Cash Flow & Net Worth → Goals → Retirement (Monte Carlo / buckets) → Investments → Insurance → Tax → Loans → Scenarios → Recommendations → 90-Day Action Plan → Estate → Appendix.
+
+Fonts: `pdf_generator/fonts/DejaVuSans.ttf` and `DejaVuSans-Bold.ttf` (required for `₹`).
+
+### Charts (`charts/`)
+
+Matplotlib PNGs embedded in Excel/PDF (net worth, cash flow, allocation, goals, retirement, scenarios, health score).
+
+Generated files land under `output/reports/<client_id>/` and `output/charts/<client_id>/`.
+
+---
+
+## Data storage & security
+
+| Data | Location | Survives restart? |
+|------|----------|-------------------|
+| Advisors / clients / plans | `data/financial_planner.db` (SQLite) | Yes |
+| Excel / PDF / charts | `output/` | Yes |
+| Assumptions | `config/*.json` | Yes |
+
+Security basics:
+
+- Passwords hashed with **bcrypt**  
+- API protected by **JWT** (HS256)  
+- Clients scoped by `advisor_id`  
+- Downloads require authentication  
+
+Details: [`docs/DATA_STORAGE.md`](docs/DATA_STORAGE.md).
 
 ---
 
@@ -190,31 +391,82 @@ Database:
 
 ```bash
 export PYTHONPATH=.
-pytest -q
+pytest -q                                 # full suite
+pytest tests/test_api_integration.py -q   # API only
+pytest tests/test_reports.py -q           # Excel / PDF / charts (incl. ₹ check)
+python3 scripts/run_manual_checks.py      # end-to-end smoke checks
 ```
 
-Coverage includes TVM, loans, tax, full engine integration, Excel/PDF/chart generation.
+Coverage includes TVM, loans, tax, engine integration, and report generation.
 
 ---
 
-## Excel Sheets Generated
+## Docker
 
-Cover, Client Summary, Financial Snapshot, Income, Expenses, Assets, Liabilities, Net Worth, Cash Flow, Emergency Fund, Insurance, Investment Portfolio, Asset Allocation, Mutual Funds, Stocks, Gold, Loans, Loan Schedule, Goal Planning, Retirement, Tax Planning, Education / Marriage / Travel Planning, Estate Planning, Recommendations, Risk Analysis, Scenario Analysis, Inflation Analysis, Dashboard, Charts, Assumptions, Glossary.
+```bash
+# optional: export SECRET_KEY=...
+docker compose up --build
+```
+
+| Service | URL |
+|---------|-----|
+| Frontend (Nginx) | http://localhost |
+| Backend API | http://localhost:8000 |
+| PostgreSQL | localhost:5432 (`fp_user` / `fp_password` / db `financial_planner`) |
+
+Compose wires `DATABASE_URL` to Postgres automatically. See also [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
 ---
 
-## PDF Sections
+## Frontend routes
 
-Executive Summary → Health Scorecard → Risk → Cash Flow & Net Worth → Goals → Retirement (incl. Monte Carlo & buckets) → Investments → Insurance → Tax → Loans → Scenarios → Recommendations → 90-Day Action Plan → Estate Checklist → Appendix.
+| Path | Page |
+|------|------|
+| `/` | Landing |
+| `/login` | Advisor login / register |
+| `/dashboard` | KPIs, allocation, goals |
+| `/clients` | Client list / manage |
+| `/planner` | Multi-step profile wizard + generate |
+| `/what-if` | Scenario sliders |
+| `/glossary` | Financial terms |
+
+Auth: `access_token` in `localStorage`. Stale tokens are cleared on `401` / fresh login.
 
 ---
 
-## Design Principles
+## Troubleshooting
 
-- **No hardcoded client information** — every field is form/API driven
-- **SOLID, typed, documented** Python modules
-- **Indian financial planning standards** (tax slabs, 80C/80CCD/80D, HRA, EPF/NPS/PPF)
-- **Configurable recommendations** — asset *categories*, not specific fund schemes
+| Problem | Fix |
+|---------|-----|
+| `Could not validate credentials` | Clear site data / log in again. Restart API if `data/financial_planner.db` was replaced while uvicorn was running. |
+| `Incorrect email or password` | Use demo creds above, or register a new advisor. Demo password is reset on startup if the hash drifts. |
+| Negative net worth | Assets step empty or lower than loan principals. Fill **Assets** in full ₹ (not only Investments SIPs). |
+| `₹` missing / boxes in PDF | Ensure `pdf_generator/fonts/DejaVu*.ttf` exist; regenerate PDF. |
+| `pg_config` / `psycopg2` build errors | Local SQLite does not need Postgres. Use `requirements.txt` only, or Python 3.12. |
+| `uvicorn: command not found` | Activate `.venv` and reinstall `requirements.txt`. |
+| Frontend API calls fail | Backend must be on :8000; use Vite proxy (default) or set `VITE_API_URL`. |
+| Packages fail on Python 3.14 | Recreate venv with 3.12: `python3.12 -m venv .venv` |
+
+---
+
+## Further docs
+
+| Doc | Contents |
+|-----|----------|
+| [`docs/API.md`](docs/API.md) | API request/response notes |
+| [`docs/DATA_STORAGE.md`](docs/DATA_STORAGE.md) | Persistence & security |
+| [`DEPLOYMENT.md`](DEPLOYMENT.md) | Deployment notes |
+| http://localhost:8000/docs | Live OpenAPI / Swagger |
+
+---
+
+## Design principles
+
+1. **Configurable inputs only** — no hardcoded client data in calculations  
+2. **Indian planning standards** — tax slabs, 80C / 80CCD / 80D, HRA, EPF / NPS / PPF  
+3. **Category recommendations** — not scheme-level product pushing  
+4. **Typed, modular Python** — engine separable from the web layer  
+5. **Advisor-grade outputs** — Excel + multi-page PDF suitable for client discussions  
 
 ---
 
