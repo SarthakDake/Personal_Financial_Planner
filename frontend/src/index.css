@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", Georgia, serif;
+
+  --color-navy: #0b3d5c;
+  --color-navy-deep: #072a40;
+  --color-teal: #1f6f8b;
+  --color-accent: #99c24d;
+  --color-warm: #f18f01;
+  --color-danger: #c73e1d;
+  --color-surface: #f4f7fa;
+  --color-surface-dark: #0c1821;
+  --color-card: #ffffff;
+  --color-card-dark: #122535;
+  --color-muted: #64748b;
+  --color-border: #d8e2ea;
+  --color-border-dark: #1e3a4c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark body,
+.dark {
+  background: var(--color-surface-dark);
+  color: #e2e8f0;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.bg-mesh {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(31, 111, 139, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(153, 194, 77, 0.14), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(11, 61, 92, 0.10), transparent 55%);
+}
+
+.dark .bg-mesh {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(31, 111, 139, 0.28), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(153, 194, 77, 0.12), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(7, 42, 64, 0.6), transparent 55%);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.delay-1 {
+  animation-delay: 0.08s;
+}
+.delay-2 {
+  animation-delay: 0.16s;
+}
+.delay-3 {
+  animation-delay: 0.24s;
+}

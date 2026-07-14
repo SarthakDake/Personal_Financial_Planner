@@ -1,0 +1,127 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What is your primary investment objective?",
+      "options": [
+        {"id": "a", "text": "Capital preservation", "score": 1},
+        {"id": "b", "text": "Steady income with some growth", "score": 2},
+        {"id": "c", "text": "Balanced growth", "score": 3},
+        {"id": "d", "text": "Maximum long-term growth", "score": 4}
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "How would you react if your portfolio dropped 20% in a year?",
+      "options": [
+        {"id": "a", "text": "Sell everything immediately", "score": 1},
+        {"id": "b", "text": "Sell some holdings", "score": 2},
+        {"id": "c", "text": "Hold and wait for recovery", "score": 3},
+        {"id": "d", "text": "Invest more at lower prices", "score": 4}
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "What is your investment experience?",
+      "options": [
+        {"id": "a", "text": "None / Fixed deposits only", "score": 1},
+        {"id": "b", "text": "Some mutual funds", "score": 2},
+        {"id": "c", "text": "Diversified portfolio including equities", "score": 3},
+        {"id": "d", "text": "Active trader / sophisticated investor", "score": 4}
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "What portion of your income can you comfortably invest?",
+      "options": [
+        {"id": "a", "text": "Less than 10%", "score": 1},
+        {"id": "b", "text": "10% to 20%", "score": 2},
+        {"id": "c", "text": "20% to 35%", "score": 3},
+        {"id": "d", "text": "More than 35%", "score": 4}
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "What is your investment time horizon?",
+      "options": [
+        {"id": "a", "text": "Less than 3 years", "score": 1},
+        {"id": "b", "text": "3 to 5 years", "score": 2},
+        {"id": "c", "text": "5 to 10 years", "score": 3},
+        {"id": "d", "text": "More than 10 years", "score": 4}
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "How dependent are you on investment income for living expenses?",
+      "options": [
+        {"id": "a", "text": "Highly dependent", "score": 1},
+        {"id": "b", "text": "Somewhat dependent", "score": 2},
+        {"id": "c", "text": "Slightly dependent", "score": 3},
+        {"id": "d", "text": "Not dependent at all", "score": 4}
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Which statement best describes your attitude toward risk?",
+      "options": [
+        {"id": "a", "text": "I prefer certainty over higher returns", "score": 1},
+        {"id": "b", "text": "I accept small fluctuations for modest growth", "score": 2},
+        {"id": "c", "text": "I accept moderate volatility for higher growth", "score": 3},
+        {"id": "d", "text": "I am comfortable with high volatility for maximum returns", "score": 4}
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Do you have an adequate emergency fund (6+ months expenses)?",
+      "options": [
+        {"id": "a", "text": "No emergency fund", "score": 1},
+        {"id": "b", "text": "Less than 3 months", "score": 2},
+        {"id": "c", "text": "3 to 6 months", "score": 3},
+        {"id": "d", "text": "More than 6 months", "score": 4}
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "What is your current age bracket?",
+      "options": [
+        {"id": "a", "text": "Above 55", "score": 1},
+        {"id": "b", "text": "45 to 55", "score": 2},
+        {"id": "c", "text": "30 to 45", "score": 3},
+        {"id": "d", "text": "Below 30", "score": 4}
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "How stable is your primary income source?",
+      "options": [
+        {"id": "a", "text": "Unstable / irregular", "score": 1},
+        {"id": "b", "text": "Somewhat stable", "score": 2},
+        {"id": "c", "text": "Stable salaried income", "score": 3},
+        {"id": "d", "text": "Very stable with multiple income streams", "score": 4}
+      ]
+    }
+  ],
+  "score_bands": [
+    {
+      "min": 10,
+      "max": 18,
+      "profile": "conservative",
+      "personality": "Capital Preserver",
+      "description": "You prioritize safety and capital protection. A debt-heavy portfolio with limited equity exposure suits your temperament."
+    },
+    {
+      "min": 19,
+      "max": 28,
+      "profile": "moderate",
+      "personality": "Balanced Grower",
+      "description": "You seek a balance between growth and stability. A diversified portfolio across equity and debt is appropriate."
+    },
+    {
+      "min": 29,
+      "max": 40,
+      "profile": "aggressive",
+      "personality": "Growth Seeker",
+      "description": "You are comfortable with volatility in pursuit of higher long-term returns. An equity-dominant portfolio aligns with your goals."
+    }
+  ]
+}

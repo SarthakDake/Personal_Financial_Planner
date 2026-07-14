@@ -1,0 +1,252 @@
+{
+  "asset_classes": [
+    {
+      "id": "large_cap",
+      "name": "Large Cap Funds",
+      "category": "equity",
+      "risk_level": "moderate",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.15, "max": 0.25},
+        "moderate": {"min": 0.20, "max": 0.30},
+        "aggressive": {"min": 0.15, "max": 0.25}
+      },
+      "description": "Invest in top 100 companies by market capitalization for relatively stable equity growth."
+    },
+    {
+      "id": "flexi_cap",
+      "name": "Flexi Cap Funds",
+      "category": "equity",
+      "risk_level": "moderate_high",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.10},
+        "moderate": {"min": 0.15, "max": 0.25},
+        "aggressive": {"min": 0.20, "max": 0.30}
+      },
+      "description": "Flexible allocation across market caps for diversified equity exposure."
+    },
+    {
+      "id": "mid_cap",
+      "name": "Mid Cap Funds",
+      "category": "equity",
+      "risk_level": "high",
+      "min_horizon_years": 7,
+      "suitable_profiles": ["moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.00},
+        "moderate": {"min": 0.05, "max": 0.15},
+        "aggressive": {"min": 0.10, "max": 0.20}
+      },
+      "description": "Growth-oriented funds investing in mid-sized companies with higher volatility."
+    },
+    {
+      "id": "small_cap",
+      "name": "Small Cap Funds",
+      "category": "equity",
+      "risk_level": "very_high",
+      "min_horizon_years": 8,
+      "suitable_profiles": ["aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.00},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.05, "max": 0.15}
+      },
+      "description": "High-growth potential with significant volatility; suitable for long horizons."
+    },
+    {
+      "id": "international",
+      "name": "International Equity",
+      "category": "equity",
+      "risk_level": "high",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.05},
+        "moderate": {"min": 0.05, "max": 0.10},
+        "aggressive": {"min": 0.05, "max": 0.15}
+      },
+      "description": "Geographic diversification through global equity markets."
+    },
+    {
+      "id": "debt",
+      "name": "Debt Funds",
+      "category": "debt",
+      "risk_level": "low",
+      "min_horizon_years": 1,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.20, "max": 0.35},
+        "moderate": {"min": 0.10, "max": 0.20},
+        "aggressive": {"min": 0.05, "max": 0.10}
+      },
+      "description": "Fixed-income instruments for stability and predictable returns."
+    },
+    {
+      "id": "gold",
+      "name": "Gold / Gold ETFs",
+      "category": "commodity",
+      "risk_level": "moderate",
+      "min_horizon_years": 3,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.15},
+        "moderate": {"min": 0.05, "max": 0.10},
+        "aggressive": {"min": 0.00, "max": 0.05}
+      },
+      "description": "Hedge against inflation and currency risk via physical gold or gold ETFs."
+    },
+    {
+      "id": "hybrid",
+      "name": "Hybrid Funds",
+      "category": "hybrid",
+      "risk_level": "moderate",
+      "min_horizon_years": 3,
+      "suitable_profiles": ["conservative", "moderate"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.15},
+        "moderate": {"min": 0.05, "max": 0.10},
+        "aggressive": {"min": 0.00, "max": 0.05}
+      },
+      "description": "Balanced equity-debt allocation managed dynamically."
+    },
+    {
+      "id": "liquid",
+      "name": "Liquid Funds",
+      "category": "debt",
+      "risk_level": "very_low",
+      "min_horizon_years": 0,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.10},
+        "moderate": {"min": 0.03, "max": 0.08},
+        "aggressive": {"min": 0.02, "max": 0.05}
+      },
+      "description": "Short-term parking for emergency funds and near-term liquidity needs."
+    },
+    {
+      "id": "ppf",
+      "name": "Public Provident Fund (PPF)",
+      "category": "debt",
+      "risk_level": "very_low",
+      "min_horizon_years": 15,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.15},
+        "moderate": {"min": 0.03, "max": 0.08},
+        "aggressive": {"min": 0.00, "max": 0.05}
+      },
+      "description": "EEE tax-efficient long-term debt instrument with government backing."
+    },
+    {
+      "id": "nps",
+      "name": "National Pension System (NPS)",
+      "category": "hybrid",
+      "risk_level": "moderate",
+      "min_horizon_years": 10,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.10},
+        "moderate": {"min": 0.05, "max": 0.10},
+        "aggressive": {"min": 0.05, "max": 0.10}
+      },
+      "description": "Retirement-focused product with additional Section 80CCD(1B) tax benefit."
+    },
+    {
+      "id": "epf",
+      "name": "Employees Provident Fund (EPF)",
+      "category": "debt",
+      "risk_level": "very_low",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["conservative", "moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.15},
+        "moderate": {"min": 0.05, "max": 0.10},
+        "aggressive": {"min": 0.03, "max": 0.08}
+      },
+      "description": "Mandatory retirement savings for salaried employees with attractive interest."
+    },
+    {
+      "id": "fd",
+      "name": "Fixed Deposits",
+      "category": "debt",
+      "risk_level": "very_low",
+      "min_horizon_years": 1,
+      "suitable_profiles": ["conservative"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.15},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.00, "max": 0.00}
+      },
+      "description": "Bank/NBFC fixed deposits for capital protection and known returns."
+    },
+    {
+      "id": "government_bonds",
+      "name": "Government Bonds",
+      "category": "debt",
+      "risk_level": "very_low",
+      "min_horizon_years": 3,
+      "suitable_profiles": ["conservative", "moderate"],
+      "allocation_rules": {
+        "conservative": {"min": 0.05, "max": 0.10},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.00, "max": 0.00}
+      },
+      "description": "Sovereign-backed bonds offering safety and steady income."
+    },
+    {
+      "id": "corporate_bonds",
+      "name": "Corporate Bonds",
+      "category": "debt",
+      "risk_level": "low_moderate",
+      "min_horizon_years": 3,
+      "suitable_profiles": ["conservative", "moderate"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.10},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.00, "max": 0.00}
+      },
+      "description": "Higher-yielding debt instruments issued by corporates with credit risk."
+    },
+    {
+      "id": "reit",
+      "name": "REITs",
+      "category": "real_estate",
+      "risk_level": "moderate",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.00},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.00, "max": 0.05}
+      },
+      "description": "Real Estate Investment Trusts for liquid real-estate exposure and rental yield."
+    },
+    {
+      "id": "invit",
+      "name": "InvITs",
+      "category": "infrastructure",
+      "risk_level": "moderate",
+      "min_horizon_years": 5,
+      "suitable_profiles": ["moderate", "aggressive"],
+      "allocation_rules": {
+        "conservative": {"min": 0.00, "max": 0.00},
+        "moderate": {"min": 0.00, "max": 0.05},
+        "aggressive": {"min": 0.00, "max": 0.05}
+      },
+      "description": "Infrastructure Investment Trusts providing yield from infrastructure assets."
+    }
+  ],
+  "age_based_equity_cap": {
+    "formula": "100 - age",
+    "min_equity": 0.20,
+    "max_equity": 0.90
+  },
+  "goal_horizon_overrides": {
+    "short_term": {"max_years": 3, "prefer": ["liquid", "debt", "fd"]},
+    "medium_term": {"max_years": 7, "prefer": ["hybrid", "debt", "large_cap", "gold"]},
+    "long_term": {"max_years": 99, "prefer": ["flexi_cap", "mid_cap", "large_cap", "nps", "ppf"]}
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "personal": {
+    "full_name": "Aarav Sharma",
+    "age": 35,
+    "retirement_age": 60,
+    "life_expectancy": 85,
+    "marital_status": "married",
+    "dependents": 2,
+    "children": 1,
+    "city_type": "metro",
+    "email": "aarav.sharma@example.com",
+    "phone": "+91-98765-43210",
+    "pan": "ABCDE1234F",
+    "residential_status": "resident"
+  },
+  "income": {
+    "salary_monthly": 250000,
+    "bonus_annual": 500000,
+    "business_income_annual": 0,
+    "rental_income_monthly": 25000,
+    "other_income_annual": 50000,
+    "employer_epf_contribution_monthly": 1800,
+    "employee_epf_contribution_monthly": 1800
+  },
+  "expenses": {
+    "monthly_living": 80000,
+    "travel_monthly": 10000,
+    "medical_monthly": 5000,
+    "education_monthly": 15000,
+    "insurance_premium_monthly": 8000,
+    "entertainment_monthly": 8000,
+    "miscellaneous_monthly": 10000,
+    "rent_monthly": 0
+  },
+  "loans": [
+    {
+      "name": "Home Loan - Primary Residence",
+      "loan_type": "home",
+      "principal_outstanding": 4500000,
+      "interest_rate_annual": 0.085,
+      "emi": 42000,
+      "tenure_months_remaining": 180,
+      "original_principal": 6000000,
+      "prepayment_amount": 200000
+    },
+    {
+      "name": "Car Loan",
+      "loan_type": "car",
+      "principal_outstanding": 450000,
+      "interest_rate_annual": 0.095,
+      "emi": 15000,
+      "tenure_months_remaining": 36,
+      "original_principal": 800000,
+      "prepayment_amount": 0
+    }
+  ],
+  "assets": {
+    "savings": 350000,
+    "fd": 800000,
+    "ppf": 650000,
+    "epf": 1200000,
+    "nps": 400000,
+    "mutual_funds": 2500000,
+    "stocks": 900000,
+    "gold": 400000,
+    "real_estate": 12000000,
+    "cash": 50000,
+    "emergency_fund": 400000,
+    "other": 100000,
+    "reit": 150000,
+    "invit": 0
+  },
+  "insurance": {
+    "health_cover": 1000000,
+    "health_premium_annual": 25000,
+    "life_cover": 10000000,
+    "life_premium_annual": 18000,
+    "accident_cover": 0,
+    "accident_premium_annual": 0,
+    "critical_illness_cover": 0,
+    "critical_illness_premium_annual": 0
+  },
+  "investments": [
+    {
+      "name": "Flexi Cap SIP",
+      "category": "mutual_funds",
+      "amount": 1500000,
+      "monthly_sip": 40000,
+      "expected_return": 0.13
+    },
+    {
+      "name": "Large Cap Index",
+      "category": "mutual_funds",
+      "amount": 1000000,
+      "monthly_sip": 15000,
+      "expected_return": 0.12
+    },
+    {
+      "name": "Direct Equity Portfolio",
+      "category": "stocks",
+      "amount": 900000,
+      "monthly_sip": 10000,
+      "expected_return": 0.14
+    },
+    {
+      "name": "Sovereign Gold Bond / Gold ETF",
+      "category": "gold",
+      "amount": 400000,
+      "monthly_sip": 5000,
+      "expected_return": 0.08
+    }
+  ],
+  "goals": [
+    {
+      "name": "Child Higher Education",
+      "goal_type": "children_education",
+      "current_cost": 2500000,
+      "target_year": 15,
+      "priority": "high",
+      "already_saved": 300000
+    },
+    {
+      "name": "Dream Home Upgrade",
+      "goal_type": "house",
+      "current_cost": 5000000,
+      "target_year": 10,
+      "priority": "medium",
+      "already_saved": 500000
+    },
+    {
+      "name": "Europe Vacation",
+      "goal_type": "vacation",
+      "current_cost": 400000,
+      "target_year": 3,
+      "priority": "low",
+      "already_saved": 50000
+    },
+    {
+      "name": "Child Marriage",
+      "goal_type": "children_marriage",
+      "current_cost": 2000000,
+      "target_year": 22,
+      "priority": "medium",
+      "already_saved": 100000
+    },
+    {
+      "name": "Comfortable Retirement",
+      "goal_type": "retirement",
+      "current_cost": 0,
+      "target_year": 25,
+      "priority": "high",
+      "already_saved": 0,
+      "notes": "Handled primarily by Retirement module"
+    }
+  ],
+  "tax": {
+    "regime_preference": "new",
+    "hra_received_annual": 0,
+    "rent_paid_annual": 0,
+    "section_80c_investments": 150000,
+    "section_80ccd_1b": 50000,
+    "section_80d_self": 25000,
+    "section_80d_parents": 25000,
+    "home_loan_interest": 200000,
+    "is_senior_citizen": false,
+    "parents_senior_citizen": false,
+    "ltcg_equity": 80000,
+    "stcg_equity": 20000,
+    "other_deductions": 0
+  },
+  "risk_profile": "moderate",
+  "risk_answers": {
+    "q1": "c",
+    "q2": "c",
+    "q3": "c",
+    "q4": "c",
+    "q5": "d",
+    "q6": "d",
+    "q7": "c",
+    "q8": "d",
+    "q9": "c",
+    "q10": "c"
+  },
+  "assumptions": {
+    "general_inflation": 0.06,
+    "healthcare_inflation": 0.08,
+    "expected_equity_return": 0.12,
+    "safe_withdrawal_rate": 0.04
+  }
+}
