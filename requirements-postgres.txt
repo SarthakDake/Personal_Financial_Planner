@@ -1,0 +1,9 @@
+# Optional — only needed when DATABASE_URL points at PostgreSQL.
+# Uses psycopg v3 (modern driver with broader wheel support than psycopg2).
+#
+#   pip install -r requirements-postgres.txt
+#
+# Then set:
+#   DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/financial_planner
+
+psycopg[binary]>=3.2.3,<4
