@@ -11,9 +11,16 @@ from config.settings import get_settings
 
 settings = get_settings()
 
+def _sqlite_path(url: str) -> Path:
+    """Resolve filesystem path from a SQLAlchemy SQLite URL."""
+    # sqlite:///relative.db  or  sqlite:////absolute/path.db
+    raw = url.replace("sqlite:///", "", 1)
+    return Path(raw)
+
+
 connect_args = {}
 if settings.is_sqlite:
-    Path(settings.database_url.replace("sqlite:///", "")).parent.mkdir(parents=True, exist_ok=True)
+    _sqlite_path(settings.database_url).parent.mkdir(parents=True, exist_ok=True)
     connect_args = {"check_same_thread": False}
 
 engine = create_engine(

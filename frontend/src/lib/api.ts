@@ -13,16 +13,53 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status
+    const url = String(error?.config?.url || '')
+    // Drop stale JWTs so the login screen does not keep a dead session
+    if (status === 401 && !url.includes('/auth/login') && !url.includes('/auth/register')) {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+    }
+    return Promise.reject(error)
+  },
+)
+
+function errorDetail(err: unknown, fallback: string): string {
+  const detail = (err as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail
+  if (typeof detail === 'string') return detail
+  if (Array.isArray(detail)) {
+    return detail
+      .map((d) => (typeof d === 'object' && d && 'msg' in d ? String((d as { msg: string }).msg) : String(d)))
+      .join('; ')
+  }
+  if (detail && typeof detail === 'object') return JSON.stringify(detail)
+  return fallback
+}
+
 export async function login(email: string, password: string) {
-  const { data } = await api.post('/auth/login', { email, password })
-  localStorage.setItem('access_token', data.access_token)
-  localStorage.setItem('refresh_token', data.refresh_token)
-  return data
+  // Always start clean — avoids sending a stale Bearer token on login
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
+  try {
+    const { data } = await api.post('/auth/login', { email, password })
+    localStorage.setItem('access_token', data.access_token)
+    localStorage.setItem('refresh_token', data.refresh_token)
+    return data
+  } catch (err) {
+    throw new Error(errorDetail(err, 'Authentication failed'))
+  }
 }
 
 export async function register(email: string, password: string, full_name: string) {
-  const { data } = await api.post('/auth/register', { email, password, full_name })
-  return data
+  try {
+    const { data } = await api.post('/auth/register', { email, password, full_name })
+    return data
+  } catch (err) {
+    throw new Error(errorDetail(err, 'Registration failed'))
+  }
 }
 
 export async function me() {

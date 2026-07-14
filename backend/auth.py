@@ -16,7 +16,8 @@ from database.models import User
 from database.session import get_db
 
 settings = get_settings()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.api_prefix}/auth/login")
+# Swagger "Authorize" uses OAuth2 password form — must hit the form endpoint
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.api_prefix}/auth/login/form")
 
 
 def _to_bytes(value: str) -> bytes:
@@ -74,11 +75,13 @@ async def get_current_user(
     )
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.jwt_algorithm])
-        if payload.get("type") != "access":
+        token_type = payload.get("type")
+        if token_type is not None and token_type != "access":
             raise credentials_exception
-        user_id: str | None = payload.get("sub")
+        user_id = payload.get("sub")
         if user_id is None:
             raise credentials_exception
+        user_id = str(user_id)
     except JWTError as exc:
         raise credentials_exception from exc
 

@@ -25,19 +25,30 @@ logger = logging.getLogger(__name__)
 
 
 def _seed_demo_advisor() -> None:
-    """Create a demo advisor account if none exists (credentials in README)."""
+    """Ensure demo advisor exists with the documented password (README)."""
+    from backend.auth import verify_password
+
+    demo_email = "advisor@wealthcraft.example"
+    demo_password = "Advisor@123"
     db = SessionLocal()
     try:
-        if not get_user_by_email(db, "advisor@wealthcraft.example"):
+        user = get_user_by_email(db, demo_email)
+        if not user:
             user = User(
-                email="advisor@wealthcraft.example",
-                hashed_password=hash_password("Advisor@123"),
+                email=demo_email,
+                hashed_password=hash_password(demo_password),
                 full_name="Demo Advisor",
                 role="advisor",
             )
             db.add(user)
             db.commit()
-            logger.info("Seeded demo advisor: advisor@wealthcraft.example")
+            logger.info("Seeded demo advisor: %s", demo_email)
+        elif not verify_password(demo_password, user.hashed_password):
+            # Recover if DB was recreated / hash scheme changed mid-session
+            user.hashed_password = hash_password(demo_password)
+            user.is_active = True
+            db.commit()
+            logger.info("Reset demo advisor password: %s", demo_email)
     finally:
         db.close()
 

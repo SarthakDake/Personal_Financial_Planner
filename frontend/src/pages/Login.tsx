@@ -30,10 +30,7 @@ export default function Login() {
       await login(email, password)
       navigate('/dashboard')
     } catch (err: unknown) {
-      const message =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        'Authentication failed'
-      setError(String(message))
+      setError(err instanceof Error ? err.message : 'Authentication failed')
     } finally {
       setLoading(false)
     }
