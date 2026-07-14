@@ -28,11 +28,17 @@ Services:
 Set:
 
 ```env
-DATABASE_URL=postgresql+psycopg2://USER:PASSWORD@HOST:5432/financial_planner
+DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/financial_planner
 APP_ENV=production
 DEBUG=false
 CORS_ORIGINS=https://your-domain.example
 SECRET_KEY=<long-random-value>
+```
+
+Install the Postgres driver on the host/image:
+
+```bash
+pip install -r requirements-postgres.txt
 ```
 
 SQLAlchemy creates tables on startup via `init_db()`. For managed migrations, Alembic is included in requirements — initialize with:
