@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { formatINR, formatPct } from '@/lib/utils'
 import { BookOpen, Plus, RefreshCw, Sparkles } from 'lucide-react'
 
-const COLORS = ['#3b82f6', '#38bdf8', '#6366f1', '#22d3ee', '#818cf8']
+const COLORS = ['#00D1FF', '#00A3FF', '#14B8A6', '#38BDF8', '#22D3EE']
 
 export default function Dashboard() {
   const [clients, setClients] = useState<Client[]>([])
@@ -112,7 +112,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {msg && <p className="text-sm text-sky-600 dark:text-sky-300 animate-fade-in">{msg}</p>}
+      {msg && <p className="text-sm text-cyan-700 dark:text-[#00D1FF] animate-fade-in">{msg}</p>}
 
       {!clients.length && (
         <Card className="animate-fade-up">
@@ -167,14 +167,14 @@ export default function Dashboard() {
               },
             ].map((kpi, i) => (
               <Card key={kpi.label} className={`animate-fade-up delay-${i + 1} relative overflow-hidden`}>
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent via-sky-400 to-indigo-400" />
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent via-teal to-accent" />
                 <CardHeader className="p-4 pb-1">
                   <CardTitle className="text-[10px] sm:text-xs uppercase tracking-wider text-muted font-medium">
                     {kpi.label}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-1">
-                  <div className="text-lg sm:text-2xl font-semibold text-slate-900 dark:text-sky-100 break-words">
+                  <div className="text-lg sm:text-2xl font-semibold text-slate-900 dark:text-[#e8fbff] dark:glow-cyan-text break-words">
                     {kpi.value}
                   </div>
                   <p className="mt-1 text-[11px] text-muted">{kpi.hint}</p>
@@ -209,11 +209,17 @@ export default function Dashboard() {
               <CardContent className="h-64 sm:h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={goals} layout="vertical" margin={{ left: 8, right: 8 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
-                    <YAxis type="category" dataKey="name" width={70} tick={{ fontSize: 10 }} />
-                    <Tooltip />
-                    <Bar dataKey="progress" fill="#3b82f6" radius={[0, 6, 6, 0]} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1F2A33" />
+                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: '#9CA3AF' }} />
+                    <YAxis type="category" dataKey="name" width={70} tick={{ fontSize: 10, fill: '#9CA3AF' }} />
+                    <Tooltip
+                      contentStyle={{
+                        background: '#1A1A1A',
+                        border: '1px solid rgba(0,209,255,0.25)',
+                        borderRadius: 12,
+                      }}
+                    />
+                    <Bar dataKey="progress" fill="#00D1FF" radius={[0, 6, 6, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

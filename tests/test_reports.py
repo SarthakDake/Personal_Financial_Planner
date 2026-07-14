@@ -69,3 +69,18 @@ def test_pdf_report(tmp_path, plan_and_profile):
     PDFReportGenerator(FIRM).generate(plan, profile, out, charts)
     assert out.exists()
     assert out.stat().st_size > 30_000
+    raw = out.read_bytes()
+    assert b"DejaVu" in raw or b"DejaVuSans" in raw
+
+
+def test_pdf_rupee_symbol_renders(tmp_path, plan_and_profile):
+    """Helvetica lacks ₹; embedded DejaVu must make the symbol extractable."""
+    pytest.importorskip("pypdf")
+    from pypdf import PdfReader
+
+    plan, profile = plan_and_profile
+    out = tmp_path / "rupee.pdf"
+    PDFReportGenerator(FIRM).generate(plan, profile, out, [])
+    text = "\n".join((p.extract_text() or "") for p in PdfReader(str(out)).pages[:5])
+    assert "₹" in text
+    assert text.count("₹") >= 3

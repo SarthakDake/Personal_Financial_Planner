@@ -47,10 +47,10 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-mesh pb-20 md:pb-0">
-      <header className="sticky top-0 z-40 border-b border-border/60 dark:border-border-dark/80 bg-white/75 dark:bg-[#0b1220]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-border/60 dark:border-cyan-500/15 bg-white/75 dark:bg-[#0d0d0d]/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6">
           <Link to="/dashboard" className="flex items-center gap-2.5 animate-fade-in min-w-0">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white font-display text-xl glow-blue">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-[#0d0d0d] font-display text-xl glow-blue">
               W
             </div>
             <div className="min-w-0">
@@ -72,8 +72,8 @@ export default function Layout() {
                   cn(
                     'flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors',
                     isActive
-                      ? 'bg-accent text-white shadow-[0_8px_24px_-12px_rgba(59,130,246,0.9)]'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-800/80',
+                      ? 'bg-accent text-[#0d0d0d] font-semibold shadow-[0_0_24px_-6px_rgba(0,209,255,0.75)]'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-cyan-50 dark:hover:bg-[#1a1a1a]',
                   )
                 }
               >
@@ -113,7 +113,7 @@ export default function Layout() {
         </div>
 
         {menuOpen && (
-          <div className="lg:hidden border-t border-border/60 dark:border-border-dark bg-white/95 dark:bg-[#0b1220]/95 px-4 py-3 space-y-1 animate-fade-in">
+          <div className="lg:hidden border-t border-border/60 dark:border-cyan-500/15 bg-white/95 dark:bg-[#0d0d0d]/95 px-4 py-3 space-y-1 animate-fade-in">
             {nav.map((item) => (
               <NavLink
                 key={item.to}
@@ -122,7 +122,7 @@ export default function Layout() {
                 className={({ isActive }) =>
                   cn(
                     'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm',
-                    isActive ? 'bg-accent text-white' : 'text-slate-700 dark:text-slate-200',
+                    isActive ? 'bg-accent text-[#0d0d0d] font-semibold' : 'text-slate-700 dark:text-slate-200',
                   )
                 }
               >
@@ -148,7 +148,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border/70 dark:border-border-dark bg-white/95 dark:bg-[#0b1220]/95 backdrop-blur md:hidden">
+      <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border/70 dark:border-cyan-500/15 bg-white/95 dark:bg-[#0d0d0d]/95 backdrop-blur md:hidden">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1.5">
           {nav.map((item) => (
             <NavLink
@@ -157,7 +157,7 @@ export default function Layout() {
               className={({ isActive }) =>
                 cn(
                   'flex flex-col items-center gap-0.5 rounded-lg py-1.5 text-[10px]',
-                  isActive ? 'text-accent dark:text-sky-300 font-semibold' : 'text-muted',
+                  isActive ? 'text-accent dark:text-[#00D1FF] font-semibold' : 'text-muted',
                 )
               }
             >

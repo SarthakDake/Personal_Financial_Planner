@@ -1,7 +1,7 @@
 """
-Professional multi-page PDF financial plan using ReportLab.
+Dark neon-themed multi-page PDF financial plan (ReportLab).
 
-Produces a 30–50 page plan covering executive summary through appendix.
+Uses embedded DejaVu fonts so the Indian Rupee symbol (₹) renders correctly.
 """
 
 from __future__ import annotations
@@ -31,15 +31,55 @@ from reportlab.platypus import (
 from financial_engine.models import ClientFinancialProfile
 from utils.money import format_inr
 
-NAVY = colors.HexColor("#0B3D5C")
-TEAL = colors.HexColor("#1F6F8B")
-ACCENT = colors.HexColor("#99C24D")
-LIGHT = colors.HexColor("#F4F7FA")
-GRAY = colors.HexColor("#64748B")
+# Neon charcoal theme (matches WealthCraft UI)
+BG = colors.HexColor("#0D0D0D")
+CARD = colors.HexColor("#1A1A1A")
+CARD_ALT = colors.HexColor("#141414")
+CYAN = colors.HexColor("#00D1FF")
+CYAN_DIM = colors.HexColor("#00A3FF")
+TEAL = colors.HexColor("#14B8A6")
+TEXT = colors.HexColor("#F5F7FA")
+MUTED = colors.HexColor("#9CA3AF")
+BORDER = colors.HexColor("#1F2A33")
+NAVY = CYAN  # section accents
+ACCENT = CYAN
+LIGHT = CARD
+GRAY = MUTED
+
+FONT_DIR = Path(__file__).resolve().parent / "fonts"
+FONT_REG = "DejaVu"
+FONT_BOLD = "DejaVu-Bold"
+
+
+def _register_fonts() -> None:
+    """Embed DejaVu so Indian Rupee (₹) and Unicode text render in PDF."""
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+
+    registered = set(pdfmetrics.getRegisteredFontNames())
+    regular = FONT_DIR / "DejaVuSans.ttf"
+    bold = FONT_DIR / "DejaVuSans-Bold.ttf"
+    if not regular.exists() or not bold.exists():
+        raise FileNotFoundError(
+            f"DejaVu fonts missing under {FONT_DIR}. Required for ₹ rendering."
+        )
+    if FONT_REG not in registered:
+        pdfmetrics.registerFont(TTFont(FONT_REG, str(regular)))
+    if FONT_BOLD not in registered:
+        pdfmetrics.registerFont(TTFont(FONT_BOLD, str(bold)))
+    # Map <b> tags inside Paragraphs to DejaVu-Bold (not Helvetica-Bold)
+    pdfmetrics.registerFontFamily(
+        FONT_REG,
+        normal=FONT_REG,
+        bold=FONT_BOLD,
+        italic=FONT_REG,
+        boldItalic=FONT_BOLD,
+    )
 
 
 class PDFReportGenerator:
     def __init__(self, firm: dict[str, str]):
+        _register_fonts()
         self.firm = firm
         self.styles = self._build_styles()
 
@@ -48,9 +88,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="CoverTitle",
-                fontName="Helvetica-Bold",
+                fontName=FONT_BOLD,
                 fontSize=22,
-                textColor=NAVY,
+                textColor=TEXT,
                 alignment=TA_CENTER,
                 spaceAfter=12,
             )
@@ -58,9 +98,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="CoverSub",
-                fontName="Helvetica",
+                fontName=FONT_REG,
                 fontSize=12,
-                textColor=TEAL,
+                textColor=CYAN,
                 alignment=TA_CENTER,
                 spaceAfter=8,
             )
@@ -68,9 +108,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="SectionHead",
-                fontName="Helvetica-Bold",
+                fontName=FONT_BOLD,
                 fontSize=14,
-                textColor=NAVY,
+                textColor=CYAN,
                 spaceBefore=16,
                 spaceAfter=8,
                 borderPadding=4,
@@ -79,9 +119,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="SubHead",
-                fontName="Helvetica-Bold",
+                fontName=FONT_BOLD,
                 fontSize=11,
-                textColor=TEAL,
+                textColor=CYAN_DIM,
                 spaceBefore=10,
                 spaceAfter=6,
             )
@@ -89,9 +129,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="BodyText2",
-                fontName="Helvetica",
+                fontName=FONT_REG,
                 fontSize=9,
-                textColor=colors.HexColor("#1A1A1A"),
+                textColor=MUTED,
                 alignment=TA_JUSTIFY,
                 spaceAfter=6,
                 leading=13,
@@ -100,7 +140,7 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="FooterStyle",
-                fontName="Helvetica",
+                fontName=FONT_REG,
                 fontSize=8,
                 textColor=GRAY,
                 alignment=TA_CENTER,
@@ -109,8 +149,9 @@ class PDFReportGenerator:
         styles.add(
             ParagraphStyle(
                 name="BulletText",
-                fontName="Helvetica",
+                fontName=FONT_REG,
                 fontSize=9,
+                textColor=MUTED,
                 leading=12,
                 leftIndent=10,
             )
@@ -177,14 +218,26 @@ class PDFReportGenerator:
 
         def _footer(canvas, doc_):
             canvas.saveState()
-            canvas.setFont("Helvetica", 8)
-            canvas.setFillColor(GRAY)
+            width, height = A4
+            # Dark page background
+            canvas.setFillColor(BG)
+            canvas.rect(0, 0, width, height, fill=1, stroke=0)
+            # Cyan top accent
+            canvas.setStrokeColor(CYAN)
+            canvas.setLineWidth(1.2)
+            canvas.line(18 * mm, height - 10 * mm, width - 18 * mm, height - 10 * mm)
+            # Footer
+            canvas.setFont(FONT_REG, 8)
+            canvas.setFillColor(MUTED)
             canvas.drawString(
                 18 * mm,
                 10 * mm,
                 f"{self.firm.get('name', '')} | Confidential | {profile.personal.full_name}",
             )
-            canvas.drawRightString(A4[0] - 18 * mm, 10 * mm, f"Page {doc_.page}")
+            canvas.drawRightString(width - 18 * mm, 10 * mm, f"Page {doc_.page}")
+            canvas.setStrokeColor(BORDER)
+            canvas.setLineWidth(0.6)
+            canvas.line(18 * mm, 14 * mm, width - 18 * mm, 14 * mm)
             canvas.restoreState()
 
         doc.build(story, onFirstPage=_footer, onLaterPages=_footer)
@@ -193,14 +246,15 @@ class PDFReportGenerator:
     def _table(self, data, col_widths=None):
         t = Table(data, colWidths=col_widths, hAlign="LEFT")
         style = [
-            ("BACKGROUND", (0, 0), (-1, 0), NAVY),
-            ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#111827")),
+            ("TEXTCOLOR", (0, 0), (-1, 0), CYAN),
+            ("FONTNAME", (0, 0), (-1, 0), FONT_BOLD),
             ("FONTSIZE", (0, 0), (-1, -1), 8),
-            ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
-            ("BACKGROUND", (0, 1), (-1, -1), LIGHT),
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [LIGHT, colors.white]),
-            ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#CBD5E1")),
+            ("FONTNAME", (0, 1), (-1, -1), FONT_REG),
+            ("TEXTCOLOR", (0, 1), (-1, -1), TEXT),
+            ("BACKGROUND", (0, 1), (-1, -1), CARD),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [CARD, CARD_ALT]),
+            ("GRID", (0, 0), (-1, -1), 0.4, BORDER),
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
             ("LEFTPADDING", (0, 0), (-1, -1), 6),
             ("RIGHTPADDING", (0, 0), (-1, -1), 6),

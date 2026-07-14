@@ -43,7 +43,7 @@ export default function Login() {
     <div className="min-h-screen bg-mesh dark flex items-center justify-center px-4">
       <div className="w-full max-w-md animate-fade-up">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white font-display text-3xl glow-blue">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-[#0d0d0d] font-display text-3xl glow-blue">
             W
           </div>
           <h1 className="font-display text-4xl text-white">WealthCraft</h1>

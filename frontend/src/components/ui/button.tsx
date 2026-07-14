@@ -9,12 +9,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-accent text-white hover:bg-blue-500 shadow-[0_8px_24px_-12px_rgba(59,130,246,0.8)]',
+          'bg-accent text-[#0d0d0d] hover:bg-teal font-semibold shadow-[0_0_24px_-6px_rgba(0,209,255,0.75)]',
         accent:
-          'bg-sky-400 text-slate-950 hover:bg-sky-300 shadow-[0_8px_24px_-12px_rgba(56,189,248,0.7)]',
+          'bg-teal text-[#0d0d0d] hover:bg-accent font-semibold shadow-[0_0_24px_-6px_rgba(0,209,255,0.65)]',
         outline:
-          'border border-border dark:border-border-dark bg-transparent text-slate-800 dark:text-slate-100 hover:bg-blue-50 dark:hover:bg-slate-800/80',
-        ghost: 'hover:bg-blue-50 dark:hover:bg-slate-800/70 text-slate-700 dark:text-slate-200',
+          'border border-border dark:border-cyan-500/25 bg-transparent text-slate-800 dark:text-slate-100 hover:bg-cyan-50 dark:hover:bg-[#1a1a1a]',
+        ghost: 'hover:bg-cyan-50 dark:hover:bg-[#1a1a1a] text-slate-700 dark:text-slate-200',
         danger: 'bg-danger text-white hover:brightness-110',
       },
       size: {
