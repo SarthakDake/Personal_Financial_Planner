@@ -21,7 +21,7 @@ export default function Clients() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between animate-fade-up">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">Clients</h1>
+          <h1 className="font-display text-3xl sm:text-4xl text-slate-900 dark:text-white">Clients</h1>
           <p className="mt-1 text-sm text-muted">Manage configurable client profiles — no hardcoded data.</p>
         </div>
         <div className="flex flex-wrap gap-2">

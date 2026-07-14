@@ -26,7 +26,11 @@ const nav = [
 
 export default function Layout() {
   const navigate = useNavigate()
-  const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark')
+  // Fintech default: dark theme (investment dashboard feel)
+  const [dark, setDark] = useState(() => {
+    const saved = localStorage.getItem('theme')
+    return saved ? saved === 'dark' : true
+  })
   const [userName, setUserName] = useState('Advisor')
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -43,18 +47,18 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-mesh pb-20 md:pb-0">
-      <header className="sticky top-0 z-40 border-b border-border/70 dark:border-border-dark bg-white/80 dark:bg-surface-dark/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border/60 dark:border-border-dark/80 bg-white/75 dark:bg-[#0b1220]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6">
           <Link to="/dashboard" className="flex items-center gap-2.5 animate-fade-in min-w-0">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-navy text-accent font-display text-xl">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white font-display text-xl glow-blue">
               W
             </div>
             <div className="min-w-0">
-              <div className="font-display text-lg sm:text-xl leading-none text-navy dark:text-white truncate">
+              <div className="font-display text-lg sm:text-xl leading-none text-slate-900 dark:text-white truncate">
                 WealthCraft
               </div>
               <div className="hidden sm:block text-[11px] tracking-wide text-muted">
-                Professional Financial Planner
+                Investment Planning Desk
               </div>
             </div>
           </Link>
@@ -66,10 +70,10 @@ export default function Layout() {
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors',
+                    'flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors',
                     isActive
-                      ? 'bg-navy text-white'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-surface dark:hover:bg-card-dark',
+                      ? 'bg-accent text-white shadow-[0_8px_24px_-12px_rgba(59,130,246,0.9)]'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-800/80',
                   )
                 }
               >
@@ -82,7 +86,7 @@ export default function Layout() {
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="hidden md:inline text-xs text-muted max-w-[120px] truncate">{userName}</span>
             <Button variant="ghost" size="icon" onClick={() => setDark((d) => !d)} aria-label="Toggle theme">
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {dark ? <Sun className="h-4 w-4 text-sky-300" /> : <Moon className="h-4 w-4 text-accent" />}
             </Button>
             <Button
               variant="outline"
@@ -109,7 +113,7 @@ export default function Layout() {
         </div>
 
         {menuOpen && (
-          <div className="lg:hidden border-t border-border/60 bg-white/95 dark:bg-surface-dark/95 px-4 py-3 space-y-1 animate-fade-in">
+          <div className="lg:hidden border-t border-border/60 dark:border-border-dark bg-white/95 dark:bg-[#0b1220]/95 px-4 py-3 space-y-1 animate-fade-in">
             {nav.map((item) => (
               <NavLink
                 key={item.to}
@@ -117,8 +121,8 @@ export default function Layout() {
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm',
-                    isActive ? 'bg-navy text-white' : 'text-slate-700 dark:text-slate-200',
+                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm',
+                    isActive ? 'bg-accent text-white' : 'text-slate-700 dark:text-slate-200',
                   )
                 }
               >
@@ -127,7 +131,7 @@ export default function Layout() {
               </NavLink>
             ))}
             <button
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-danger"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-danger"
               onClick={() => {
                 logout()
                 navigate('/login')
@@ -144,8 +148,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Mobile bottom navigation */}
-      <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border/70 dark:border-border-dark bg-white/95 dark:bg-surface-dark/95 backdrop-blur md:hidden">
+      <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border/70 dark:border-border-dark bg-white/95 dark:bg-[#0b1220]/95 backdrop-blur md:hidden">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-1.5">
           {nav.map((item) => (
             <NavLink
@@ -154,7 +157,7 @@ export default function Layout() {
               className={({ isActive }) =>
                 cn(
                   'flex flex-col items-center gap-0.5 rounded-lg py-1.5 text-[10px]',
-                  isActive ? 'text-navy dark:text-accent font-semibold' : 'text-muted',
+                  isActive ? 'text-accent dark:text-sky-300 font-semibold' : 'text-muted',
                 )
               }
             >

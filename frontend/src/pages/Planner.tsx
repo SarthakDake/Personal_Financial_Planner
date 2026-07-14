@@ -37,7 +37,7 @@ const STEPS = [
 
 function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-border bg-stone-100/80 dark:bg-stone-900/50 px-3 py-2 text-xs text-stone-600 dark:text-stone-300 mb-4">
+    <div className="rounded-xl border border-sky-300/40 dark:border-sky-500/20 bg-sky-50/80 dark:bg-sky-500/10 px-3 py-2 text-xs text-slate-600 dark:text-slate-300 mb-4">
       {children}
     </div>
   )
@@ -275,7 +275,7 @@ export default function Planner() {
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between animate-fade-up">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">Client Planner</h1>
+          <h1 className="font-display text-3xl sm:text-4xl text-slate-900 dark:text-white">Client Planner</h1>
           <p className="mt-1 text-sm text-muted">
             Step {step + 1}/{STEPS.length}: {title}. Amounts show Monthly or Annual; rates use % (e.g. 8.5).
           </p>
@@ -297,8 +297,8 @@ export default function Planner() {
             onClick={() => setStep(i)}
             className={`shrink-0 rounded-lg px-2.5 py-1.5 text-[11px] sm:text-xs transition-colors ${
               i === step
-                ? 'bg-navy text-white'
-                : 'bg-white dark:bg-card-dark border border-border dark:border-border-dark text-muted'
+                ? 'bg-accent text-white shadow-[0_8px_20px_-12px_rgba(59,130,246,0.9)]'
+                : 'bg-white/80 dark:bg-card-dark border border-border dark:border-border-dark text-muted'
             }`}
           >
             {s}
@@ -942,7 +942,7 @@ export default function Planner() {
                 </div>
               )}
               {riskResult && (
-                <div className="rounded-xl bg-surface dark:bg-navy-deep p-4 text-sm">
+                <div className="rounded-xl bg-sky-50 dark:bg-slate-900/80 border border-sky-200/50 dark:border-slate-700 p-4 text-sm">
                   Profile: <b>{String(riskResult.profile)}</b> · Personality:{' '}
                   <b>{String(riskResult.personality)}</b> · Score: {String(riskResult.total_score)}
                 </div>
@@ -1005,7 +1005,7 @@ export default function Planner() {
                 </Button>
               </div>
               <ErrorBox errors={errors} />
-              {message && <p className="text-sm text-stone-600 dark:text-stone-300">{message}</p>}
+              {message && <p className="text-sm text-sky-600 dark:text-sky-300">{message}</p>}
               {preview && (
                 <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
                   {[
@@ -1041,7 +1041,7 @@ export default function Planner() {
           )}
 
           <ErrorBox errors={errors} />
-          {message && step !== 11 && <p className="text-sm text-stone-600 dark:text-stone-300">{message}</p>}
+          {message && step !== 11 && <p className="text-sm text-sky-600 dark:text-sky-300">{message}</p>}
 
           <div className="flex justify-between pt-4 border-t border-border/50 gap-2">
             <Button

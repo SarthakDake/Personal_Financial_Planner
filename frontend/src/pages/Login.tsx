@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { login, register } from '@/lib/api'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,10 @@ export default function Login() {
   const [fullName, setFullName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    document.documentElement.classList.add('dark')
+  }, [])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -36,19 +40,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-mesh flex items-center justify-center px-4">
+    <div className="min-h-screen bg-mesh dark flex items-center justify-center px-4">
       <div className="w-full max-w-md animate-fade-up">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-navy text-accent font-display text-3xl">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white font-display text-3xl glow-blue">
             W
           </div>
-          <h1 className="font-display text-4xl text-navy dark:text-white">WealthCraft</h1>
-          <p className="mt-2 text-sm text-muted">Clarity. Discipline. Prosperity.</p>
+          <h1 className="font-display text-4xl text-white">WealthCraft</h1>
+          <p className="mt-2 text-sm text-slate-400">Investment planning workspace</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>{mode === 'login' ? 'Advisor Sign In' : 'Create Advisor Account'}</CardTitle>
+            <CardTitle className="dark:text-white">
+              {mode === 'login' ? 'Advisor Sign In' : 'Create Advisor Account'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form className="space-y-4" onSubmit={onSubmit}>
@@ -88,14 +94,14 @@ export default function Login() {
               {mode === 'login' ? (
                 <>
                   New advisor?{' '}
-                  <button className="text-stone-700 dark:text-stone-300 underline" onClick={() => setMode('register')}>
+                  <button className="text-sky-400 underline" onClick={() => setMode('register')}>
                     Create account
                   </button>
                 </>
               ) : (
                 <>
                   Already registered?{' '}
-                  <button className="text-stone-700 dark:text-stone-300 underline" onClick={() => setMode('login')}>
+                  <button className="text-sky-400 underline" onClick={() => setMode('login')}>
                     Sign in
                   </button>
                 </>
@@ -105,7 +111,7 @@ export default function Login() {
               Demo: advisor@wealthcraft.example / Advisor@123
             </p>
             <p className="mt-2 text-center text-xs">
-              <Link to="/" className="text-stone-700 dark:text-stone-300 underline">
+              <Link to="/" className="text-sky-400 underline">
                 Back
               </Link>
             </p>

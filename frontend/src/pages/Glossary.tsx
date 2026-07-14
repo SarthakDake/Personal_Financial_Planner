@@ -232,7 +232,7 @@ export default function Glossary() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">Terminology Guide</h1>
+        <h1 className="font-display text-3xl sm:text-4xl text-slate-900 dark:text-white">Terminology Guide</h1>
         <p className="mt-1 text-sm text-muted max-w-2xl">
           Key financial planning terms used across WealthCraft. Use this page while filling the
           planner or reading reports.
@@ -251,10 +251,10 @@ export default function Glossary() {
                   key={item.term}
                   className="border-b border-border/40 pb-3 last:border-0 last:pb-0"
                 >
-                  <div className="font-semibold text-navy dark:text-white text-sm">{item.term}</div>
+                  <div className="font-semibold text-slate-900 dark:text-sky-100 text-sm">{item.term}</div>
                   <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{item.meaning}</p>
                   {item.tip && (
-                    <p className="mt-1 text-xs text-stone-600 dark:text-stone-400">Tip: {item.tip}</p>
+                    <p className="mt-1 text-xs text-sky-600 dark:text-sky-400">Tip: {item.tip}</p>
                   )}
                 </div>
               ))}

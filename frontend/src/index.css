@@ -3,26 +3,27 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Elegant silent palette — charcoal ink, soft stone, muted bronze.
-  Avoids loud teal/lime and generic purple/cream AI themes.
+  Fintech investment theme — deep slate surfaces + blue accents.
+  Dark-first for long monitoring sessions; light mode uses cool blues on soft gray.
 */
 @theme {
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Instrument Serif", Georgia, serif;
 
-  --color-navy: #1c1917;
-  --color-navy-deep: #0c0a09;
-  --color-teal: #57534e;
-  --color-accent: #a89078;
-  --color-warm: #926f4c;
-  --color-danger: #9f4a4a;
-  --color-surface: #f5f5f4;
-  --color-surface-dark: #0c0a09;
+  --color-navy: #1d4ed8;
+  --color-navy-deep: #1e3a8a;
+  --color-teal: #38bdf8;
+  --color-accent: #3b82f6;
+  --color-warm: #f59e0b;
+  --color-danger: #f87171;
+  --color-success: #34d399;
+  --color-surface: #eef2ff;
+  --color-surface-dark: #0b1220;
   --color-card: #ffffff;
-  --color-card-dark: #1c1917;
-  --color-muted: #78716c;
-  --color-border: #e7e5e4;
-  --color-border-dark: #292524;
+  --color-card-dark: #121a2b;
+  --color-muted: #94a3b8;
+  --color-border: #c7d2fe;
+  --color-border-dark: #1e293b;
 }
 
 * {
@@ -39,14 +40,14 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   background: var(--color-surface);
-  color: #1c1917;
+  color: #0f172a;
   -webkit-font-smoothing: antialiased;
 }
 
 .dark body,
 .dark {
   background: var(--color-surface-dark);
-  color: #e7e5e4;
+  color: #e2e8f0;
 }
 
 .font-display {
@@ -54,18 +55,36 @@ body {
 }
 
 .bg-mesh {
-  background-color: var(--color-surface);
+  background-color: #eef2ff;
   background-image:
-    radial-gradient(ellipse 90% 55% at 0% 0%, rgba(168, 144, 120, 0.10), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(28, 25, 23, 0.05), transparent 50%),
-    linear-gradient(180deg, #fafaf9 0%, #f5f5f4 45%, #f0efed 100%);
+    radial-gradient(ellipse 80% 55% at 10% -10%, rgba(59, 130, 246, 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 95% 10%, rgba(56, 189, 248, 0.16), transparent 50%),
+    linear-gradient(180deg, #f8fafc 0%, #eef2ff 50%, #e0e7ff 100%);
 }
 
 .dark .bg-mesh {
-  background-color: var(--color-surface-dark);
+  background-color: #0b1220;
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(168, 144, 120, 0.08), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(41, 37, 36, 0.8), transparent 55%);
+    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(59, 130, 246, 0.22), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 90% 15%, rgba(56, 189, 248, 0.12), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(30, 58, 138, 0.35), transparent 60%),
+    linear-gradient(180deg, #0b1220 0%, #0f172a 55%, #111827 100%);
+}
+
+.fintech-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.88));
+  border: 1px solid rgba(199, 210, 254, 0.9);
+  box-shadow: 0 10px 30px -18px rgba(29, 78, 216, 0.35);
+}
+
+.dark .fintech-card {
+  background: linear-gradient(180deg, rgba(18, 26, 43, 0.96), rgba(15, 23, 42, 0.92));
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  box-shadow: 0 12px 40px -20px rgba(0, 0, 0, 0.7);
+}
+
+.glow-blue {
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25), 0 0 28px -8px rgba(59, 130, 246, 0.45);
 }
 
 @keyframes fade-up {
@@ -88,12 +107,26 @@ body {
   }
 }
 
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
 .animate-fade-up {
   animation: fade-up 0.55s ease-out both;
 }
 
 .animate-fade-in {
   animation: fade-in 0.4s ease-out both;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 4s ease-in-out infinite;
 }
 
 .delay-1 {

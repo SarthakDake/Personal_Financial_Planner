@@ -76,7 +76,7 @@ export default function WhatIf() {
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-stone-600"
+        className="w-full accent-blue-500"
       />
     </div>
   )
@@ -84,7 +84,7 @@ export default function WhatIf() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">What-If Analysis</h1>
+        <h1 className="font-display text-3xl sm:text-4xl text-slate-900 dark:text-white">What-If Analysis</h1>
         <p className="mt-1 text-sm text-muted">
           Sliders use whole percentages (e.g. inflation 6 = 6%). SIP change is Monthly ₹.
           {isPending ? ' Updating…' : ''}

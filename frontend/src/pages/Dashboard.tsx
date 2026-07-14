@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { formatINR, formatPct } from '@/lib/utils'
 import { BookOpen, Plus, RefreshCw, Sparkles } from 'lucide-react'
 
-const COLORS = ['#1c1917', '#57534e', '#a89078', '#78716c', '#926f4c']
+const COLORS = ['#3b82f6', '#38bdf8', '#6366f1', '#22d3ee', '#818cf8']
 
 export default function Dashboard() {
   const [clients, setClients] = useState<Client[]>([])
@@ -70,8 +70,10 @@ export default function Dashboard() {
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between animate-fade-up">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl text-navy dark:text-white">Dashboard</h1>
-          <p className="mt-1 text-sm text-muted">Live financial snapshot for the selected client.</p>
+          <h1 className="font-display text-3xl sm:text-4xl text-slate-900 dark:text-white">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted">
+            Portfolio snapshot, allocation trends, and goal progress for the selected client.
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <select
@@ -110,7 +112,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {msg && <p className="text-sm text-stone-600 dark:text-stone-300 animate-fade-in">{msg}</p>}
+      {msg && <p className="text-sm text-sky-600 dark:text-sky-300 animate-fade-in">{msg}</p>}
 
       {!clients.length && (
         <Card className="animate-fade-up">
@@ -143,27 +145,39 @@ export default function Dashboard() {
         <>
           <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             {[
-              { label: 'Net Worth', value: formatINR(Number(summary.net_worth || 0)) },
-              { label: 'Monthly Surplus', value: formatINR(Number(summary.monthly_surplus || 0)) },
+              {
+                label: 'Net Worth',
+                value: formatINR(Number(summary.net_worth || 0)),
+                hint: 'Assets − liabilities',
+              },
+              {
+                label: 'Monthly Surplus',
+                value: formatINR(Number(summary.monthly_surplus || 0)),
+                hint: 'Cash flow after EMI & SIP',
+              },
               {
                 label: 'Health Score',
                 value: `${summary.health_score} (${summary.health_grade})`,
+                hint: 'Composite financial fitness',
               },
               {
                 label: 'Retirement Progress',
                 value: formatPct(Number(summary.retirement_progress_percent || 0)),
+                hint: 'Projected vs required corpus',
               },
             ].map((kpi, i) => (
-              <Card key={kpi.label} className={`animate-fade-up delay-${i + 1}`}>
+              <Card key={kpi.label} className={`animate-fade-up delay-${i + 1} relative overflow-hidden`}>
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent via-sky-400 to-indigo-400" />
                 <CardHeader className="p-4 pb-1">
                   <CardTitle className="text-[10px] sm:text-xs uppercase tracking-wider text-muted font-medium">
                     {kpi.label}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-1">
-                  <div className="text-lg sm:text-2xl font-semibold text-navy dark:text-white break-words">
+                  <div className="text-lg sm:text-2xl font-semibold text-slate-900 dark:text-sky-100 break-words">
                     {kpi.value}
                   </div>
+                  <p className="mt-1 text-[11px] text-muted">{kpi.hint}</p>
                 </CardContent>
               </Card>
             ))}
@@ -199,7 +213,7 @@ export default function Dashboard() {
                     <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
                     <YAxis type="category" dataKey="name" width={70} tick={{ fontSize: 10 }} />
                     <Tooltip />
-                    <Bar dataKey="progress" fill="#57534e" radius={[0, 6, 6, 0]} />
+                    <Bar dataKey="progress" fill="#3b82f6" radius={[0, 6, 6, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -246,7 +260,7 @@ export default function Dashboard() {
                   return (
                     <div key={key} className="flex justify-between gap-2">
                       <span className="capitalize">{key}</span>
-                      <span className={d?.adequate ? 'text-accent' : 'text-warm'}>
+                      <span className={d?.adequate ? 'text-emerald-400' : 'text-amber-400'}>
                         {d?.adequate ? 'Adequate' : `Gap ${formatINR(Number(d?.gap || 0))}`}
                       </span>
                     </div>

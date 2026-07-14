@@ -6,7 +6,7 @@ export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttribute
     <input
       type={type}
       className={cn(
-        'flex h-10 w-full rounded-lg border border-border dark:border-border-dark bg-white dark:bg-card-dark px-3 py-2 text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/70',
+        'flex h-10 w-full rounded-xl border border-border dark:border-border-dark bg-white/90 dark:bg-slate-900/70 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50',
         className,
       )}
       ref={ref}

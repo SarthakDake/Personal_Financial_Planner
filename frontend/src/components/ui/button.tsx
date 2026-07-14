@@ -4,14 +4,17 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-navy text-white hover:bg-navy-deep shadow-sm',
-        accent: 'bg-accent text-navy hover:brightness-105 shadow-sm',
-        outline: 'border border-border dark:border-border-dark bg-transparent hover:bg-surface dark:hover:bg-card-dark',
-        ghost: 'hover:bg-surface dark:hover:bg-card-dark',
+        default:
+          'bg-accent text-white hover:bg-blue-500 shadow-[0_8px_24px_-12px_rgba(59,130,246,0.8)]',
+        accent:
+          'bg-sky-400 text-slate-950 hover:bg-sky-300 shadow-[0_8px_24px_-12px_rgba(56,189,248,0.7)]',
+        outline:
+          'border border-border dark:border-border-dark bg-transparent text-slate-800 dark:text-slate-100 hover:bg-blue-50 dark:hover:bg-slate-800/80',
+        ghost: 'hover:bg-blue-50 dark:hover:bg-slate-800/70 text-slate-700 dark:text-slate-200',
         danger: 'bg-danger text-white hover:brightness-110',
       },
       size: {
